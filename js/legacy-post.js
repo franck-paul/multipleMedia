@@ -42,7 +42,7 @@ jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
   if (d === undefined || d.list.length === 0) {
     return;
   }
-  const doInsert = function (tb, infos) {
+  const doInsert = (tb, infos) => {
     // insert selected media
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
@@ -86,7 +86,7 @@ jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
   if (d === undefined || d.list.length === 0) {
     return;
   }
-  const doInsert = function (tb, infos) {
+  const doInsert = (tb, infos) => {
     // insert selected media
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
@@ -137,86 +137,76 @@ jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
   if (d === undefined || d.list.length === 0) {
     return;
   }
-  const doInsert = function (tb, infos) {
+  const doInsert = (tb, infos) => {
     // insert selected media
-    Object.values(infos.list).forEach((media) => {
-      const alt = tb.getSelectedText() ? tb.getSelectedText() : media.title;
-      if (media.src == undefined) {
-        return;
-      }
-
-      const fig = media.description ? tb.iwin.document.createElement('figure') : null;
-      const img = tb.iwin.document.createElement('img');
-      const block = media.description ? fig : img;
-
-      if (infos.settings.alignment == 'left') {
-        if (block.style.styleFloat == undefined) {
-          block.style.cssFloat = 'left';
-        } else {
-          block.style.styleFloat = 'left';
+    Object.values(infos.list)
+      .reverse()
+      .forEach((media) => {
+        const alt = tb.getSelectedText() ? tb.getSelectedText() : media.title;
+        if (media.src == undefined) {
+          return;
         }
-        block.style.marginTop = 0;
-        block.style.marginRight = '1em';
-        block.style.marginBottom = '1em';
-        block.style.marginLeft = 0;
-      } else if (infos.settings.alignment == 'right') {
-        if (block.style.styleFloat == undefined) {
-          block.style.cssFloat = 'right';
-        } else {
-          block.style.styleFloat = 'right';
-        }
-        block.style.marginTop = 0;
-        block.style.marginRight = 0;
-        block.style.marginBottom = '1em';
-        block.style.marginLeft = '1em';
-      } else if (infos.settings.alignment == 'center') {
-        if (media.description) {
-          block.style.textAlign = 'center';
-        } else {
+
+        const fig = media.description ? tb.iwin.document.createElement('figure') : null;
+        const img = tb.iwin.document.createElement('img');
+        const block = media.description ? fig : img;
+
+        if (infos.settings.alignment == 'left') {
+          if (block.style.styleFloat == undefined) {
+            block.style.cssFloat = 'left';
+          } else {
+            block.style.styleFloat = 'left';
+          }
           block.style.marginTop = 0;
-          block.style.marginRight = 'auto';
-          block.style.marginBottom = 0;
-          block.style.marginLeft = 'auto';
-          block.style.display = 'block';
+          block.style.marginRight = '1em';
+          block.style.marginBottom = '1em';
+          block.style.marginLeft = 0;
+        } else if (infos.settings.alignment == 'right') {
+          if (block.style.styleFloat == undefined) {
+            block.style.cssFloat = 'right';
+          } else {
+            block.style.styleFloat = 'right';
+          }
+          block.style.marginTop = 0;
+          block.style.marginRight = 0;
+          block.style.marginBottom = '1em';
+          block.style.marginLeft = '1em';
+        } else if (infos.settings.alignment == 'center') {
+          if (media.description) {
+            block.style.textAlign = 'center';
+          } else {
+            block.style.marginTop = 0;
+            block.style.marginRight = 'auto';
+            block.style.marginBottom = 0;
+            block.style.marginLeft = 'auto';
+            block.style.display = 'block';
+          }
         }
-      }
 
-      img.src = tb.stripBaseURL(media.src);
-      img.setAttribute('alt', alt);
-      if (media.title) {
-        img.setAttribute('title', media.title);
-      }
-      if (media.description) {
-        const figcaption = tb.iwin.document.createElement('figcaption');
-        figcaption.appendChild(tb.iwin.document.createTextNode(d.description));
-        fig.appendChild(img);
-        fig.appendChild(figcaption);
-      }
-
-      let node;
-      if (infos.settings.link) {
-        const a = tb.iwin.document.createElement('a');
-        a.href = tb.stripBaseURL(media.url);
-        if (alt) {
-          a.setAttribute('title', alt);
+        img.src = tb.stripBaseURL(media.src);
+        img.setAttribute('alt', alt);
+        if (media.title) {
+          img.setAttribute('title', media.title);
         }
-        a.appendChild(block);
-        tb.insertNode(a);
-        node = a;
-      } else {
-        tb.insertNode(block);
-        node = block;
-      }
-      // Move current selection after inserted node
-      let sel = tb.iwin.getSelection();
-      let range = new Range();
-      range.selectNodeContents(node);
-      range.setEndAfter(node);
-      range.collapse(false);
-      sel.addRange(range);
-      sel.collapseToEnd();
-      tb.iwin.focus();
-    });
+        if (media.description) {
+          const figcaption = tb.iwin.document.createElement('figcaption');
+          figcaption.appendChild(tb.iwin.document.createTextNode(d.description));
+          fig.appendChild(img);
+          fig.appendChild(figcaption);
+        }
+
+        if (infos.settings.link) {
+          const a = tb.iwin.document.createElement('a');
+          a.href = tb.stripBaseURL(media.url);
+          if (alt) {
+            a.setAttribute('title', alt);
+          }
+          a.appendChild(block);
+          tb.insertNode(a);
+        } else {
+          tb.insertNode(block);
+        }
+      });
   };
 
   // Get medias info
@@ -230,7 +220,7 @@ jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
   if (d === undefined || d.list.length === 0) {
     return;
   }
-  const doInsert = function (tb, infos) {
+  const doInsert = (tb, infos) => {
     // insert selected media
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
