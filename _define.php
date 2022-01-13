@@ -25,8 +25,8 @@ $this->registerModule(
         'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',                  // Type
 
-        'details'    => 'https://open-time.net/docs/plugins/multipleMedia',
+        'details'    => 'https://github.com/franck-paul/multipleMedia',
         'support'    => 'https://github.com/franck-paul/multipleMedia',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/multipleMedia/master/dcstore.xml',
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/multipleMedia/main/dcstore.xml',
     ]
 );
