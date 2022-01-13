@@ -1,0 +1,12 @@
+<modules xmlns:da="http://dotaddict.org/da/">
+  <module id="multipleMedia">
+    <name>multipleMedia</name>
+    <version>1.0</version>
+    <author>Franck Paul</author>
+    <desc>Insert multiple media</desc>
+    <file>https://github.com/franck-paul/rosetta/releases/download/1.0/plugin-multipleMedia-1.0.zip</file>
+    <da:dcmin>2.21</da:dcmin>
+    <da:details>https://open-time.net/?q=multipleMedia</da:details>
+    <da:support>https://github.com/franck-paul/multipleMedia</da:support>
+  </module>
+</modules>
