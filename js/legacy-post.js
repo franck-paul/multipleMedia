@@ -77,7 +77,7 @@ jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
   };
   // Get medias info
   const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
 };
 
 // HTML (source)
@@ -128,7 +128,7 @@ jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
   };
   // Get medias info
   const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
 };
 
 // HTML (wysiwyg)
@@ -211,7 +211,7 @@ jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
 
   // Get medias info
   const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
 };
 
 // Markdown
@@ -272,7 +272,7 @@ jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
   };
   // Get medias info
   const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
 };
 
 // Get multiple media insertion config
@@ -280,13 +280,14 @@ dotclear.mm_select = dotclear.getData('mm_select');
 jsToolBar.prototype.elements.mm_select.title = dotclear.mm_select.title;
 
 // Multiple media insertion helpers
-dotclear.mm_select.getInfos = (path, list, tb, fn) => {
+dotclear.mm_select.getInfos = (path, list, pref, tb, fn) => {
   // Call REST Service
   $.get('services.php', {
     f: 'getMediaInfos',
     xd_check: dotclear.nonce,
     path,
     list,
+    pref,
   })
     .done((data) => {
       if ($('rsp[status=failed]', data).length > 0) {

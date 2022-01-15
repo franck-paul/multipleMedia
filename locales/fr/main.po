@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 multipleMedia module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-30 12:41+0100\n"
+"POT-Creation-Date: 2022-01-15 10:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,3 +18,51 @@ msgstr ""
 
 msgid "Insert multiple media"
 msgstr "Insertion multiple de média"
+
+msgid "Insertion preferences"
+msgstr "Préférences d'insertion"
+
+msgid "Image size"
+msgstr "Taille des images"
+
+msgid "original"
+msgstr "originale"
+
+msgid "Image legend and title"
+msgstr "Légende et titre des images"
+
+msgid "Legend and title"
+msgstr "Titre et légende"
+
+msgid "Title"
+msgstr "Titre"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Image alignment"
+msgstr "Alignement des images"
+
+msgid "Left"
+msgstr "Gauche"
+
+msgid "Right"
+msgstr "Droite"
+
+msgid "Center"
+msgstr "Centre"
+
+msgid "Image insertion"
+msgstr "Insertion des images"
+
+msgid "As a single image"
+msgstr "Image simple"
+
+msgid "As a link to the original image"
+msgstr "Avec un lien vers l'image originale"
+
+msgid "Insert"
+msgstr "Insérer"
+
+msgid "Cancel"
+msgstr "Annuler"

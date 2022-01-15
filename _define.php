@@ -15,15 +15,16 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'multipleMedia',          // Name
-    'Insert multiple media',  // Description
-    'Franck Paul',     // Author
-    '1.0',             // Version
+    'multipleMedia',            // Name
+    'Insert multiple media',    // Description
+    'Franck Paul',              // Author
+    '1.1',                      // Version
     [
-        'requires'    => [['core', '2.21']],        // Dependencies
-        'permissions' => 'usage,contentadmin',      // Permissions
-        'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
-        'type'        => 'plugin',                  // Type
+        'requires'    => [['core', '2.21']],
+        'permissions' => 'usage,contentadmin',
+        'priority'    => 1001,                  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
+        'type'        => 'plugin',
+        'settings'    => ['self' => false],     // index.php is only used for popup action
 
         'details'    => 'https://github.com/franck-paul/multipleMedia',
         'support'    => 'https://github.com/franck-paul/multipleMedia',

@@ -20,6 +20,7 @@ class multipleMediaRest
     {
         $src_path = !empty($get['path']) ? $get['path'] : '';
         $src_list = !empty($get['list']) ? $get['list'] : '';
+        $src_pref = !empty($get['pref']) ? $get['pref'] : '';
 
         $rsp  = new xmlTag('mm_select');
         $data = [];
@@ -62,6 +63,14 @@ class multipleMediaRest
         } catch (Exception $e) {
         }
 
+        // Merge user setting (from popup)
+        $defaults['size']      = $src_pref['size'] ?: $defaults['size'];
+        $defaults['alignment'] = $src_pref['alignment'] ?: $defaults['alignment'];
+        $defaults['link']      = $src_pref['link'] ? ($src_pref['link'] === '1') : $defaults['link'];
+        $defaults['legend']    = $src_pref['legend'] ?: $defaults['legend'];
+        $defaults['mediadef']  = $src_pref['mediadef'] ? ($src_pref['mediadef'] === '1') : $defaults['mediadef'];
+
+        // Give back selected insertion settings
         $data['settings'] = $defaults;
 
         // Get full information for each media in list
@@ -97,6 +106,8 @@ class multipleMediaRest
                 ];
             }
         }
+
+        // Give back selected media info
         $data['list'] = $list;
 
         // Other info

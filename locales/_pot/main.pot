@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 multipleMedia module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-30 12:41+0100\n"
+"POT-Creation-Date: 2022-01-15 10:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,73 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:40
+#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:32
+#: ../git-plugins/multipleMedia/index.php:23
+#: ../git-plugins/multipleMedia/index.php:34
 msgid "Insert multiple media"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:80
+msgid "Insertion preferences"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:83
+msgid "Image size"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:92
+msgid "original"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:98
+msgid "Image legend and title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:105
+msgid "Legend and title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:111
+msgid "Title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:117
+#: ../git-plugins/multipleMedia/index.php:125
+msgid "None"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:123
+msgid "Image alignment"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:126
+msgid "Left"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:127
+msgid "Right"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:128
+msgid "Center"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:141
+msgid "Image insertion"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:144
+msgid "As a single image"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:146
+msgid "As a link to the original image"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:153
+msgid "Insert"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/index.php:154
+msgid "Cancel"
 msgstr ""

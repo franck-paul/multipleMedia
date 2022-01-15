@@ -27,18 +27,9 @@ class multipleMediaAdminBehaviors
             return;
         }
 
-        $defaults = [
-            'size'      => $core->blog->settings->system->media_img_default_size ?: 'm',
-            'alignment' => $core->blog->settings->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) $core->blog->settings->system->media_img_default_link,
-            'legend'    => $core->blog->settings->system->media_img_default_legend ?: 'legend',
-            'mediadef'  => false,
-        ];
-
         return
             dcPage::jsJson('mm_select', [
-                'title'  => __('Insert multiple media'),
-                'config' => $defaults,
+                'title' => __('Insert multiple media'),
             ]) .
             dcPage::jsLoad(urldecode(dcPage::getPF('multipleMedia/js/legacy-post.js')), $core->getVersion('multipleMedia'));
     }
