@@ -16,13 +16,11 @@ class multipleMediaAdminBehaviors
             return;
         }
 
-        return dcPage::jsLoad(dcPage::getPF('multipleMedia/js/popup_media_manager.js'));
+        return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.js');
     }
 
     public static function adminPostEditor($editor = '', $context = '', array $tags = [], $syntax = '')
     {
-        global $core;
-
         if (empty($editor) || $editor != 'dcLegacyEditor') {
             return;
         }
@@ -31,6 +29,6 @@ class multipleMediaAdminBehaviors
             dcPage::jsJson('mm_select', [
                 'title' => __('Insert multiple media'),
             ]) .
-            dcPage::jsLoad(urldecode(dcPage::getPF('multipleMedia/js/legacy-post.js')), $core->getVersion('multipleMedia'));
+            dcPage::jsModuleLoad('multipleMedia/js/legacy-post.js', dcCore::app()->getVersion('multipleMedia'));
     }
 }

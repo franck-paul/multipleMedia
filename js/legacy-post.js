@@ -75,9 +75,7 @@ jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
       });
     });
   };
-  // Get medias info
-  const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
 };
 
 // HTML (source)
@@ -126,9 +124,7 @@ jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
       });
     });
   };
-  // Get medias info
-  const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
 };
 
 // HTML (wysiwyg)
@@ -209,9 +205,7 @@ jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
       });
   };
 
-  // Get medias info
-  const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
 };
 
 // Markdown
@@ -270,9 +264,7 @@ jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
       });
     });
   };
-  // Get medias info
-  const that = this;
-  dotclear.mm_select.getInfos(d.path, d.list, d.pref, that, doInsert);
+  dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
 };
 
 // Get multiple media insertion config
@@ -310,5 +302,6 @@ dotclear.mm_select.getInfos = (path, list, pref, tb, fn) => {
     .always(() => {
       // Nothing here
     });
+
   return null;
 };

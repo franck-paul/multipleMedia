@@ -18,9 +18,9 @@ $this->registerModule(
     'multipleMedia',            // Name
     'Insert multiple media',    // Description
     'Franck Paul',              // Author
-    '1.1',                      // Version
+    '1.2',
     [
-        'requires'    => [['core', '2.21']],
+        'requires'    => [['core', '2.23']],
         'permissions' => 'usage,contentadmin',
         'priority'    => 1001,                  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',

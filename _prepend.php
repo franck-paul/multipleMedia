@@ -22,5 +22,5 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin only
 
-$__autoload['multipleMediaAdminBehaviors'] = dirname(__FILE__) . '/inc/admin.behaviors.php';
-$__autoload['multipleMediaRest']           = dirname(__FILE__) . '/_services.php';
+$__autoload['multipleMediaAdminBehaviors'] = __DIR__ . '/inc/admin.behaviors.php';
+$__autoload['multipleMediaRest']           = __DIR__ . '/_services.php';

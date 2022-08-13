@@ -22,7 +22,7 @@ if (empty($_REQUEST['popup'])) {
 <head>
   <title><?php echo __('Insert multiple media'); ?></title>
 <?php
-echo dcPage::jsLoad(dcPage::getPF('multipleMedia/js/popup_media_prefs.js'));
+echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.js');
 ?>
 </head>
 
@@ -30,8 +30,8 @@ echo dcPage::jsLoad(dcPage::getPF('multipleMedia/js/popup_media_prefs.js'));
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML($core->blog->name) => '',
-        __('Insert multiple media')         => '',
+        html::escapeHTML(dcCore::app()->blog->name) => '',
+        __('Insert multiple media')                 => '',
     ]
 ) .
 dcPage::notices();
@@ -39,19 +39,20 @@ dcPage::notices();
 $src_path = !empty($_REQUEST['d']) ? $_REQUEST['d'] : '';
 
 try {
-    $media = new dcMedia($core);
+    $media = new dcMedia(dcCore::app());
     $media->chdir($src_path);
     $media->getDir();
 } catch (Exception $e) {
+    return;
 }
 
 // Get insertion settings (default or JSON local)
 
 $defaults = [
-    'size'      => $core->blog->settings->system->media_img_default_size ?: 'm',
-    'alignment' => $core->blog->settings->system->media_img_default_alignment ?: 'none',
-    'link'      => (bool) $core->blog->settings->system->media_img_default_link,
-    'legend'    => $core->blog->settings->system->media_img_default_legend ?: 'legend',
+    'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
+    'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
+    'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
+    'legend'    => dcCore::app()->blog->settings->system->media_img_default_legend ?: 'legend',
     'mediadef'  => false,
 ];
 
@@ -122,9 +123,9 @@ echo
 '<div class="two-boxes">' .
 '<h3>' . __('Image alignment') . '</h3>';
 $i_align = [
-    'none'   => [__('None'), ($defaults['alignment'] == 'none' ? 1 : 0)],
-    'left'   => [__('Left'), ($defaults['alignment'] == 'left' ? 1 : 0)],
-    'right'  => [__('Right'), ($defaults['alignment'] == 'right' ? 1 : 0)],
+    'none'   => [__('None'), ($defaults['alignment']   == 'none' ? 1 : 0)],
+    'left'   => [__('Left'), ($defaults['alignment']   == 'left' ? 1 : 0)],
+    'right'  => [__('Right'), ($defaults['alignment']  == 'right' ? 1 : 0)],
     'center' => [__('Center'), ($defaults['alignment'] == 'center' ? 1 : 0)],
 ];
 

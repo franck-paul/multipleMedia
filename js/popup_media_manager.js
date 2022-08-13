@@ -22,7 +22,7 @@ $(() => {
 
     // Return back selection
     const tb = window.opener.the_toolbar;
-    const data = tb.elements.mm_select.data;
+    const { data } = tb.elements.mm_select;
 
     data.list = Array.from(list).map((a) => a.value); // media name(s)
     data.path = media_path; // current media path

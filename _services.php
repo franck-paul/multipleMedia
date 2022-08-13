@@ -16,7 +16,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 class multipleMediaRest
 {
-    public static function getMediaInfos($core, $get)
+    public static function getMediaInfos($core = null, $get)
     {
         $src_path = !empty($get['path']) ? $get['path'] : '';
         $src_list = !empty($get['list']) ? $get['list'] : '';
@@ -27,7 +27,7 @@ class multipleMediaRest
         $ret  = false;
 
         try {
-            $media = new dcMedia($core);
+            $media = new dcMedia(dcCore::app());
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {
@@ -40,10 +40,10 @@ class multipleMediaRest
         // Get insertion settings (default or JSON local)
 
         $defaults = [
-            'size'      => $core->blog->settings->system->media_img_default_size ?: 'm',
-            'alignment' => $core->blog->settings->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) $core->blog->settings->system->media_img_default_link,
-            'legend'    => $core->blog->settings->system->media_img_default_legend ?: 'legend',
+            'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
+            'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
+            'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
+            'legend'    => dcCore::app()->blog->settings->system->media_img_default_legend ?: 'legend',
             'mediadef'  => false,
         ];
 
@@ -91,8 +91,8 @@ class multipleMediaRest
         foreach ($media->dir['files'] as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
-                $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;
-                $title = $file->media_title ?? '';
+                $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;  // @phpstan-ignore-line
+                $title = $file->media_title                                                 ?? '';
                 if ($title == $file->basename || files::tidyFileName($title) == $file->basename) {
                     $title = '';
                 }
