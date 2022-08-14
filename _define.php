@@ -18,7 +18,7 @@ $this->registerModule(
     'multipleMedia',            // Name
     'Insert multiple media',    // Description
     'Franck Paul',              // Author
-    '1.2',
+    '1.2.1',
     [
         'requires'    => [['core', '2.23']],
         'permissions' => 'usage,contentadmin',

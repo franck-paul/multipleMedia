@@ -16,7 +16,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 class multipleMediaRest
 {
-    public static function getMediaInfos($core = null, $get)
+    public static function getMediaInfos($core, $get)
     {
         $src_path = !empty($get['path']) ? $get['path'] : '';
         $src_list = !empty($get['list']) ? $get['list'] : '';
