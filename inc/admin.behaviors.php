@@ -19,7 +19,7 @@ class multipleMediaAdminBehaviors
         return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.js');
     }
 
-    public static function adminPostEditor($editor = '', $context = '', array $tags = [], $syntax = '')
+    public static function adminPostEditor($editor = '')
     {
         if (empty($editor) || $editor != 'dcLegacyEditor') {
             return;

@@ -27,7 +27,7 @@ class multipleMediaRest
         $ret  = false;
 
         try {
-            $media = new dcMedia(dcCore::app());
+            $media = new dcMedia();
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {
@@ -52,15 +52,14 @@ class multipleMediaRest
             if (!file_exists($local)) {
                 $local .= '.json';
             }
-            if (file_exists($local)) {
-                if ($specifics = json_decode(file_get_contents($local) ?? '', true)) {  // @phpstan-ignore-line
-                    foreach ($defaults as $key => $value) {
-                        $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
-                        $defaults['mediadef'] = true;
-                    }
+            if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true))) {  // @phpstan-ignore-line
+                foreach ($defaults as $key => $value) {
+                    $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
+                    $defaults['mediadef'] = true;
                 }
             }
         } catch (Exception $e) {
+            // Ignore exceptions
         }
 
         // Merge user setting (from popup)
