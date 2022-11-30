@@ -22,5 +22,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin only
 
-$__autoload['multipleMediaAdminBehaviors'] = __DIR__ . '/inc/admin.behaviors.php';
-$__autoload['multipleMediaRest']           = __DIR__ . '/_services.php';
+Clearbricks::lib()->autoload([
+    'multipleMediaAdminBehaviors' => __DIR__ . '/inc/admin.behaviors.php',
+    'multipleMediaRest'           => __DIR__ . '/_services.php',
+]);
