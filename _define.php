@@ -18,7 +18,7 @@ $this->registerModule(
     'multipleMedia',
     'Insert multiple media',
     'Franck Paul',
-    '2.1',
+    '2.1.1',
     [
         'requires'    => [['core', '2.24']],
         'permissions' => dcCore::app()->auth->makePermissions([
@@ -27,7 +27,10 @@ $this->registerModule(
         ]),
         'priority' => 1001,                  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'     => 'plugin',
-        'settings' => ['self' => false],     // index.php is only used for popup action
+        'settings' => [
+            'self' => false,                    // index.php is only used for popup action
+            'blog' => '#params.multiplemedia',
+        ],
 
         'details'    => 'https://github.com/franck-paul/multipleMedia',
         'support'    => 'https://github.com/franck-paul/multipleMedia',
