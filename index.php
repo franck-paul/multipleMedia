@@ -122,9 +122,9 @@ echo
 '<div class="two-boxes">' .
 '<h3>' . __('Image alignment') . '</h3>';
 $i_align = [
-    'none'   => [__('None'), ($defaults['alignment']   == 'none' ? 1 : 0)],
-    'left'   => [__('Left'), ($defaults['alignment']   == 'left' ? 1 : 0)],
-    'right'  => [__('Right'), ($defaults['alignment']  == 'right' ? 1 : 0)],
+    'none'   => [__('None'), ($defaults['alignment'] == 'none' ? 1 : 0)],
+    'left'   => [__('Left'), ($defaults['alignment'] == 'left' ? 1 : 0)],
+    'right'  => [__('Right'), ($defaults['alignment'] == 'right' ? 1 : 0)],
     'center' => [__('Center'), ($defaults['alignment'] == 'center' ? 1 : 0)],
 ];
 

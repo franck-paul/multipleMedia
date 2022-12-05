@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 multipleMedia module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-15 10:58+0100\n"
+"POT-Creation-Date: 2022-12-05 15:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,33 @@ msgstr ""
 
 msgid "Insert multiple media"
 msgstr "Insertion multiple de média"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "div"
+msgstr ""
+
+msgid "p"
+msgstr ""
+
+msgid "aside"
+msgstr ""
+
+msgid "article"
+msgstr ""
+
+msgid "section"
+msgstr ""
+
+msgid "Container HTML element:"
+msgstr "Élément HTML englobant :"
+
+msgid "HTML element class(es):"
+msgstr "Classes pour l'élément englobant :"
+
+msgid "Comma separated list of classes, leave it empty to not use it."
+msgstr "Liste de classes séparées par des virgules, laissez vide pour ne pas l'utiliser."
 
 msgid "Insertion preferences"
 msgstr "Préférences d'insertion"
@@ -36,9 +63,6 @@ msgstr "Titre et légende"
 
 msgid "Title"
 msgstr "Titre"
-
-msgid "None"
-msgstr "Aucun"
 
 msgid "Image alignment"
 msgstr "Alignement des images"

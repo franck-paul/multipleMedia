@@ -44,6 +44,10 @@ jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
   }
   const doInsert = (tb, infos) => {
     // insert selected media
+    if (infos.settings?.block) {
+      const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+      tb.encloseSelection(`///html\n<${elt}>\n///\n`, `///html\n</${infos.settings.block}>\n///\n`);
+    }
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
         const alt = str ? str : media.title;
@@ -86,6 +90,10 @@ jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
   }
   const doInsert = (tb, infos) => {
     // insert selected media
+    if (infos.settings?.block) {
+      const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+      tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
+    }
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
         const alt = str ? str : media.title;
@@ -134,7 +142,14 @@ jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
     return;
   }
   const doInsert = (tb, infos) => {
+    let container = undefined;
     // insert selected media
+    if (infos.settings?.block) {
+      container = tb.iwin.document.createElement(infos.settings.block);
+      if (infos.settings?.class) {
+        container.setAttribute('class', infos.settings?.class);
+      }
+    }
     Object.values(infos.list)
       .reverse()
       .forEach((media) => {
@@ -198,11 +213,22 @@ jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
             a.setAttribute('title', alt);
           }
           a.appendChild(block);
-          tb.insertNode(a);
+          if (container === undefined) {
+            tb.insertNode(a);
+          } else {
+            container.appendChild(a);
+          }
         } else {
-          tb.insertNode(block);
+          if (container === undefined) {
+            tb.insertNode(block);
+          } else {
+            container.appendChild(block);
+          }
         }
       });
+    if (container !== undefined) {
+      tb.insertNode(container);
+    }
   };
 
   dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
@@ -216,6 +242,10 @@ jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
   }
   const doInsert = (tb, infos) => {
     // insert selected media
+    if (infos.settings?.block) {
+      const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+      tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
+    }
     Object.values(infos.list).forEach((media) => {
       tb.encloseSelection('', '', (str) => {
         const alignments = {

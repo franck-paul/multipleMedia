@@ -39,7 +39,10 @@ class multipleMediaRest
 
         // Get insertion settings (default or JSON local)
 
+        dcCore::app()->blog->settings->addNamespace('multiplemedia');
         $defaults = [
+            'block'     => dcCore::app()->blog->settings->multiplemedia->block ?: '',
+            'class'     => dcCore::app()->blog->settings->multiplemedia->class ?: '',
             'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
             'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
             'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
@@ -91,7 +94,7 @@ class multipleMediaRest
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
                 $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;  // @phpstan-ignore-line
-                $title = $file->media_title                                                 ?? '';
+                $title = $file->media_title ?? '';
                 if ($title == $file->basename || files::tidyFileName($title) == $file->basename) {
                     $title = '';
                 }
