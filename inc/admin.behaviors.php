@@ -16,7 +16,7 @@ class multipleMediaAdminBehaviors
             return;
         }
 
-        return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.js');
+        return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.min.js');
     }
 
     public static function adminPostEditor($editor = '')
@@ -29,7 +29,7 @@ class multipleMediaAdminBehaviors
             dcPage::jsJson('mm_select', [
                 'title' => __('Insert multiple media'),
             ]) .
-            dcPage::jsModuleLoad('multipleMedia/js/legacy-post.js', dcCore::app()->getVersion('multipleMedia'));
+            dcPage::jsModuleLoad('multipleMedia/js/legacy-post.min.js', dcCore::app()->getVersion('multipleMedia'));
     }
 
     public static function adminBlogPreferencesForm($settings)

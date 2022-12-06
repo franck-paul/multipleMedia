@@ -22,7 +22,7 @@ if (empty($_REQUEST['popup'])) {
 <head>
   <title><?php echo __('Insert multiple media'); ?></title>
 <?php
-echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.js');
+echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.min.js');
 ?>
 </head>
 
