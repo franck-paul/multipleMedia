@@ -16,7 +16,7 @@ class multipleMediaAdminBehaviors
             return;
         }
 
-        return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.min.js');
+        return dcPage::jsModuleLoad('multipleMedia/js/popup_media_manager.js');
     }
 
     public static function adminPostEditor($editor = '')
@@ -29,7 +29,7 @@ class multipleMediaAdminBehaviors
             dcPage::jsJson('mm_select', [
                 'title' => __('Insert multiple media'),
             ]) .
-            dcPage::jsModuleLoad('multipleMedia/js/legacy-post.min.js', dcCore::app()->getVersion('multipleMedia'));
+            dcPage::jsModuleLoad('multipleMedia/js/legacy-post.js', dcCore::app()->getVersion('multipleMedia'));
     }
 
     public static function adminBlogPreferencesForm($settings)
@@ -43,7 +43,6 @@ class multipleMediaAdminBehaviors
             __('section') => 'section',
         ];
 
-        $settings->addNameSpace('multiplemedia');
         echo
         '<div class="fieldset"><h4 id="multiplemedia">multipleMedia</h4>' .
         '<p class="field"><label for="multiplemedia_block" class="classic">' . __('Container HTML element:') . '</label> ' .
@@ -59,7 +58,6 @@ class multipleMediaAdminBehaviors
 
     public static function adminBeforeBlogSettingsUpdate($settings)
     {
-        $settings->addNameSpace('multiplemedia');
         $settings->multiplemedia->put('block', $_POST['multiplemedia_block'], 'string');
         $settings->multiplemedia->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', 'string');
     }

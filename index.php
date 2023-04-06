@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Html\Html;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -22,7 +25,7 @@ if (empty($_REQUEST['popup'])) {
 <head>
   <title><?php echo __('Insert multiple media'); ?></title>
 <?php
-echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.min.js');
+echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.js');
 ?>
 </head>
 
@@ -30,7 +33,7 @@ echo dcPage::jsModuleLoad('multipleMedia/js/popup_media_prefs.min.js');
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML(dcCore::app()->blog->name) => '',
+        Html::escapeHTML(dcCore::app()->blog->name) => '',
         __('Insert multiple media')                 => '',
     ]
 ) .
@@ -61,7 +64,7 @@ try {
     if (!file_exists($local)) {
         $local .= '.json';
     }
-    if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true))) {  // @phpstan-ignore-line
+    if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true, 512, JSON_THROW_ON_ERROR))) {  // @phpstan-ignore-line
         foreach ($defaults as $key => $value) {
             $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
             $defaults['mediadef'] = true;
@@ -85,7 +88,7 @@ $s_checked = false;
 foreach (array_reverse($img_sizes) as $s => $v) {
     $s_checked = ($v == $defaults['size']);
     echo '<label class="classic">' .
-    form::radio(['src'], html::escapeHTML($v), $s_checked) . ' ' .
+    form::radio(['src'], Html::escapeHTML($v), $s_checked) . ' ' .
     $s . '</label><br /> ';
 }
 echo '<label class="classic">' .

@@ -10,6 +10,10 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\File\Files;
+use Dotclear\Helper\Html\XmlTag;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -22,7 +26,7 @@ class multipleMediaRest
         $src_list = !empty($get['list']) ? $get['list'] : '';
         $src_pref = !empty($get['pref']) ? $get['pref'] : '';
 
-        $rsp  = new xmlTag('mm_select');
+        $rsp  = new XmlTag('mm_select');
         $data = [];
         $ret  = false;
 
@@ -39,7 +43,6 @@ class multipleMediaRest
 
         // Get insertion settings (default or JSON local)
 
-        dcCore::app()->blog->settings->addNamespace('multiplemedia');
         $defaults = [
             'block'     => dcCore::app()->blog->settings->multiplemedia->block ?: '',
             'class'     => dcCore::app()->blog->settings->multiplemedia->class ?: '',
@@ -55,7 +58,7 @@ class multipleMediaRest
             if (!file_exists($local)) {
                 $local .= '.json';
             }
-            if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true))) {  // @phpstan-ignore-line
+            if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true, 512, JSON_THROW_ON_ERROR))) {  // @phpstan-ignore-line
                 foreach ($defaults as $key => $value) {
                     $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
                     $defaults['mediadef'] = true;
@@ -78,7 +81,7 @@ class multipleMediaRest
         // Get full information for each media in list
 
         $get_img_desc = function ($f, $default = '') {
-            if (count($f->media_meta) > 0) {
+            if ((is_countable($f->media_meta) ? count($f->media_meta) : 0) > 0) {
                 foreach ($f->media_meta as $k => $v) {
                     if ((string) $v && ($k == 'Description')) {
                         return (string) $v;
@@ -95,7 +98,7 @@ class multipleMediaRest
                 // Prepare media infos
                 $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;  // @phpstan-ignore-line
                 $title = $file->media_title ?? '';
-                if ($title == $file->basename || files::tidyFileName($title) == $file->basename) {
+                if ($title == $file->basename || Files::tidyFileName($title) == $file->basename) {
                     $title = '';
                 }
                 $description = $get_img_desc($file, $title);
@@ -121,7 +124,7 @@ class multipleMediaRest
 
         // Prepare return values
 
-        $rsp->data = json_encode($data);
+        $rsp->data = json_encode($data, JSON_THROW_ON_ERROR);
         $rsp->ret  = true;
 
         return $rsp;

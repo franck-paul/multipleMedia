@@ -13,10 +13,12 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 }
 
 // Register Behaviors
-dcCore::app()->addBehavior('adminPopupMediaManager', [multipleMediaAdminBehaviors::class, 'adminPopupMediaManager']);
-dcCore::app()->addBehavior('adminPostEditor', [multipleMediaAdminBehaviors::class, 'adminPostEditor']);
-dcCore::app()->addBehavior('adminBlogPreferencesFormV2', [multipleMediaAdminBehaviors::class, 'adminBlogPreferencesForm']);
-dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', [multipleMediaAdminBehaviors::class, 'adminBeforeBlogSettingsUpdate']);
+dcCore::app()->addBehaviors([
+    'adminPopupMediaManager'        => [multipleMediaAdminBehaviors::class, 'adminPopupMediaManager'],
+    'adminPostEditor'               => [multipleMediaAdminBehaviors::class, 'adminPostEditor'],
+    'adminBlogPreferencesFormV2'    => [multipleMediaAdminBehaviors::class, 'adminBlogPreferencesForm'],
+    'adminBeforeBlogSettingsUpdate' => [multipleMediaAdminBehaviors::class, 'adminBeforeBlogSettingsUpdate'],
+]);
 
 // Register REST methods
 dcCore::app()->rest->addFunction('getMediaInfos', [multipleMediaRest::class, 'getMediaInfos']);

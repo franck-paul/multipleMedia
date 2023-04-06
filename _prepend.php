@@ -10,9 +10,8 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
+
+use Dotclear\Helper\Clearbricks;
 
 // Public and Admin
 
