@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 multipleMedia module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-05 15:25+0100\n"
+"POT-Creation-Date: 2023-05-27 16:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,106 +16,110 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:30
-#: ../git-plugins/multipleMedia/index.php:23
-#: ../git-plugins/multipleMedia/index.php:34
+#: ../git-plugins/multipleMedia/src/Backend.php:27
+msgid "multipleMedia"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:48
+#: ../git-plugins/multipleMedia/src/Manage.php:79
+#: ../git-plugins/multipleMedia/src/Manage.php:84
 msgid "Insert multiple media"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:38
-#: ../git-plugins/multipleMedia/index.php:117
-#: ../git-plugins/multipleMedia/index.php:125
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:61
+#: ../git-plugins/multipleMedia/src/Manage.php:133
+#: ../git-plugins/multipleMedia/src/Manage.php:166
 msgid "None"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:39
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:62
 msgid "div"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:40
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:63
 msgid "p"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:41
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:64
 msgid "aside"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:42
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:65
 msgid "article"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:43
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:66
 msgid "section"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:49
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:77
 msgid "Container HTML element:"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:52
-msgid "HTML element class(es):"
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:84
+msgid "Social sharing buttons text prefix:"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/inc/admin.behaviors.php:56
+#: ../git-plugins/multipleMedia/src/BackendBehaviors.php:87
 msgid "Comma separated list of classes, leave it empty to not use it."
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:80
-msgid "Insertion preferences"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:83
-msgid "Image size"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:92
+#: ../git-plugins/multipleMedia/src/Manage.php:130
 msgid "original"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:98
-msgid "Image legend and title"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:105
-msgid "Legend and title"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:111
-msgid "Title"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:123
-msgid "Image alignment"
-msgstr ""
-
-#: ../git-plugins/multipleMedia/index.php:126
+#: ../git-plugins/multipleMedia/src/Manage.php:134
 msgid "Left"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:127
+#: ../git-plugins/multipleMedia/src/Manage.php:135
 msgid "Right"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:128
+#: ../git-plugins/multipleMedia/src/Manage.php:136
 msgid "Center"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:141
+#: ../git-plugins/multipleMedia/src/Manage.php:146
+msgid "Insertion preferences"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:152
+msgid "Image size"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:157
+msgid "Image legend and title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:160
+msgid "Legend and title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:163
+msgid "Title"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:170
+msgid "Image alignment"
+msgstr ""
+
+#: ../git-plugins/multipleMedia/src/Manage.php:175
 msgid "Image insertion"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:144
+#: ../git-plugins/multipleMedia/src/Manage.php:178
 msgid "As a single image"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:146
+#: ../git-plugins/multipleMedia/src/Manage.php:181
 msgid "As a link to the original image"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:153
+#: ../git-plugins/multipleMedia/src/Manage.php:188
 msgid "Insert"
 msgstr ""
 
-#: ../git-plugins/multipleMedia/index.php:154
+#: ../git-plugins/multipleMedia/src/Manage.php:191
 msgid "Cancel"
 msgstr ""
