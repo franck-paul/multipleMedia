@@ -81,7 +81,7 @@ class BackendBehaviors
                     ->size(50)
                     ->maxlength(128)
                     ->value(Html::escapeHTML($settings->class))
-                    ->label((new Label(__('Social sharing buttons text prefix:'), Label::OUTSIDE_TEXT_BEFORE))),
+                    ->label((new Label(__('HTML element class(es):'), Label::OUTSIDE_TEXT_BEFORE))),
             ]),
             (new Para())->class('form-note')->items([
                 (new Text(null, __('Comma separated list of classes, leave it empty to not use it.'))),
