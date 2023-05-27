@@ -5,20 +5,26 @@
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\multipleMedia;
+
+use dcCore;
+use dcMedia;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\Html\XmlTag;
+use Exception;
 
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-class multipleMediaRest
+class BackendRest
 {
     public static function getMediaInfos($core, $get)
     {
@@ -43,9 +49,10 @@ class multipleMediaRest
 
         // Get insertion settings (default or JSON local)
 
+        $settings = dcCore::app()->blog->settings->get(My::id());
         $defaults = [
-            'block'     => dcCore::app()->blog->settings->multiplemedia->block ?: '',
-            'class'     => dcCore::app()->blog->settings->multiplemedia->class ?: '',
+            'block'     => $settings->block ?: '',
+            'class'     => $settings->class ?: '',
             'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
             'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
             'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
@@ -58,10 +65,14 @@ class multipleMediaRest
             if (!file_exists($local)) {
                 $local .= '.json';
             }
-            if (file_exists($local) && ($specifics = json_decode(file_get_contents($local) ?? '', true, 512, JSON_THROW_ON_ERROR))) {  // @phpstan-ignore-line
-                foreach ($defaults as $key => $value) {
-                    $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
-                    $defaults['mediadef'] = true;
+            if (file_exists($local)) {
+                $specifics = file_get_contents($local);
+                if ($specifics !== false) {
+                    $specifics = json_decode($specifics, true, 512, JSON_THROW_ON_ERROR);
+                    foreach ($defaults as $key => $value) {
+                        $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
+                        $defaults['mediadef'] = true;
+                    }
                 }
             }
         } catch (Exception $e) {
