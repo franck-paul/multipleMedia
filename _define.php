@@ -14,7 +14,7 @@ $this->registerModule(
     'multipleMedia',
     'Insert multiple media',
     'Franck Paul',
-    '3.0',
+    '3.0.1',
     [
         'requires'    => [['core', '2.26']],
         'permissions' => dcCore::app()->auth->makePermissions([

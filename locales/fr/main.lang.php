@@ -11,16 +11,16 @@
 
 use Dotclear\Helper\L10n;
 
-L10n::$locales['multipleMedia'] = 'Insertion multiple de média';
+L10n::$locales['multipleMedia'] = 'multipleMedia';
 L10n::$locales['Insert multiple media'] = 'Insertion multiple de média';
 L10n::$locales['None'] = 'Aucun';
-L10n::$locales['div'] = '';
-L10n::$locales['p'] = '';
-L10n::$locales['aside'] = '';
-L10n::$locales['article'] = '';
-L10n::$locales['section'] = '';
+L10n::$locales['div'] = 'div';
+L10n::$locales['p'] = 'p';
+L10n::$locales['aside'] = 'aside';
+L10n::$locales['article'] = 'article';
+L10n::$locales['section'] = 'section';
 L10n::$locales['Container HTML element:'] = 'Élément HTML englobant :';
-L10n::$locales['HTML element class(es):'] = 'Classes pour l\'élément englobant :';
+L10n::$locales['HTML element class(es):'] = 'Classe(s) pour l\'élément englobant :';
 L10n::$locales['Comma separated list of classes, leave it empty to not use it.'] = 'Liste de classes séparées par des virgules, laissez vide pour ne pas l\'utiliser.';
 L10n::$locales['original'] = 'originale';
 L10n::$locales['Left'] = 'Gauche';

@@ -140,6 +140,8 @@ class My
                 return defined('DC_CONTEXT_ADMIN')
                     // Check specific permission
                     && dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+                        dcCore::app()->auth::PERMISSION_USAGE,
+                        dcCore::app()->auth::PERMISSION_CONTENT_ADMIN,
                         dcCore::app()->auth::PERMISSION_ADMIN,  // Admin+
                     ]), dcCore::app()->blog->id)
                 ;
