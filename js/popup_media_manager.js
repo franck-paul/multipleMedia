@@ -2,7 +2,7 @@
 'use strict';
 
 $(() => {
-  data = dotclear.getData('mm_media_manager');
+  const config = dotclear.getData('mm_media_manager');
 
   $('#select_medias').on('click', () => {
     sendCloseMultiple();
@@ -31,7 +31,7 @@ $(() => {
 
     // Ask for prefs
     const window_pref = window.open(
-      `${data.url}${media_path}`,
+      `${config.url}${media_path}`,
       'dc_popup_opt',
       'alwaysRaised=yes,dependent=yes,toolbar=yes,height=500,width=760,menubar=no,resizable=yes,scrollbars=yes,status=no',
     );
