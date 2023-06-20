@@ -34,7 +34,14 @@ class BackendBehaviors
             return;
         }
 
-        return dcPage::jsModuleLoad(My::id() . '/js/popup_media_manager.js');
+        return
+        dcPage::jsJson('mm_media_manager', [
+            'url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+                'popup' => 1,
+                'd'     => '',
+            ], '&'),
+        ]) .
+        dcPage::jsModuleLoad(My::id() . '/js/popup_media_manager.js');
     }
 
     public static function adminPostEditor($editor = '')
@@ -45,7 +52,13 @@ class BackendBehaviors
 
         return
             dcPage::jsJson('mm_select', [
-                'title' => __('Insert multiple media'),
+                'title'    => __('Insert multiple media'),
+                'icon'     => urldecode(dcPage::getPF(My::id() . '/icon.svg')),
+                'open_url' => dcCore::app()->adminurl->get('admin.media', [
+                    'popup'     => 1,
+                    'plugin_id' => 'dcLegacyEditor',
+                    'select'    => 2,   // sélection multiple
+                ], '&'),
             ]) .
             dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));
     }
