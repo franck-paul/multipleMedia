@@ -107,11 +107,11 @@ $(() => {
             .replace('"', '&quot;')}"`;
 
           if (infos.settings.alignment == 'left') {
-            res += ' style="float: left; margin: 0 1em 1em 0;"';
+            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.left + '"';
           } else if (infos.settings.alignment == 'right') {
-            res += ' style="float: right; margin: 0 0 1em 1em;"';
+            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.right + '"';
           } else if (infos.settings.alignment == 'center') {
-            res += ' style="margin: 0 auto; display: block;"';
+            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.center + '"';
           }
 
           if (media.description) {
@@ -166,34 +166,46 @@ $(() => {
           const block = media.description ? fig : img;
 
           if (infos.settings.alignment == 'left') {
-            if (block.style.styleFloat == undefined) {
-              block.style.cssFloat = 'left';
+            if (dotclear.mm_select.style.class) {
+              block.classList.add(dotclear.mm_select.style.left);
             } else {
-              block.style.styleFloat = 'left';
-            }
-            block.style.marginTop = 0;
-            block.style.marginRight = '1em';
-            block.style.marginBottom = '1em';
-            block.style.marginLeft = 0;
-          } else if (infos.settings.alignment == 'right') {
-            if (block.style.styleFloat == undefined) {
-              block.style.cssFloat = 'right';
-            } else {
-              block.style.styleFloat = 'right';
-            }
-            block.style.marginTop = 0;
-            block.style.marginRight = 0;
-            block.style.marginBottom = '1em';
-            block.style.marginLeft = '1em';
-          } else if (infos.settings.alignment == 'center') {
-            if (media.description) {
-              block.style.textAlign = 'center';
-            } else {
+              if (block.style.styleFloat == undefined) {
+                block.style.cssFloat = 'left';
+              } else {
+                block.style.styleFloat = 'left';
+              }
               block.style.marginTop = 0;
-              block.style.marginRight = 'auto';
-              block.style.marginBottom = 0;
-              block.style.marginLeft = 'auto';
-              block.style.display = 'block';
+              block.style.marginRight = '1em';
+              block.style.marginBottom = '1em';
+              block.style.marginLeft = 0;
+            }
+          } else if (infos.settings.alignment == 'right') {
+            if (dotclear.mm_select.style.class) {
+              block.classList.add('dotclear.mm_select.style.right');
+            } else {
+              if (block.style.styleFloat == undefined) {
+                block.style.cssFloat = 'right';
+              } else {
+                block.style.styleFloat = 'right';
+              }
+              block.style.marginTop = 0;
+              block.style.marginRight = 0;
+              block.style.marginBottom = '1em';
+              block.style.marginLeft = '1em';
+            }
+          } else if (infos.settings.alignment == 'center') {
+            if (dotclear.mm_select.style.class) {
+              block.classList.add(dotclear.mm_select.style.center);
+            } else {
+              if (media.description) {
+                block.style.textAlign = 'center';
+              } else {
+                block.style.marginTop = 0;
+                block.style.marginRight = 'auto';
+                block.style.marginBottom = 0;
+                block.style.marginLeft = 'auto';
+                block.style.display = 'block';
+              }
             }
           }
 
@@ -204,7 +216,7 @@ $(() => {
           }
           if (media.description) {
             const figcaption = tb.iwin.document.createElement('figcaption');
-            figcaption.appendChild(tb.iwin.document.createTextNode(d.description));
+            figcaption.appendChild(tb.iwin.document.createTextNode(media.description));
             fig.appendChild(img);
             fig.appendChild(figcaption);
           }
@@ -252,9 +264,9 @@ $(() => {
       Object.values(infos.list).forEach((media) => {
         tb.encloseSelection('', '', (str) => {
           const alignments = {
-            left: 'float: left; margin: 0 1em 1em 0;',
-            right: 'float: right; margin: 0 0 1em 1em;',
-            center: 'margin: 0 auto; display: table;',
+            left: dotclear.mm_select.style.left,
+            right: dotclear.mm_select.style.right,
+            center: dotclear.mm_select.style.center,
           };
           const alt = (str ? str : media.title)
             .replace('&', '&amp;')
@@ -276,9 +288,9 @@ $(() => {
           // Cope with required alignment
           if (infos.settings.alignment in alignments) {
             if (legend) {
-              figure = `${figure} style="${alignments[infos.settings.alignment]}"`;
+              figure = `${figure} ${alignments[infos.settings.alignment]}"`;
             } else {
-              img = `${img} style="${alignments[infos.settings.alignment]}"`;
+              img = `${img} ${alignments[infos.settings.alignment]}"`;
             }
           }
 
