@@ -77,7 +77,7 @@ class BackendBehaviors
         }
 
         return
-            dcPage::jsJson('mm_select', $data, '&') .
+            dcPage::jsJson('mm_select', $data) .
             dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));
     }
 
