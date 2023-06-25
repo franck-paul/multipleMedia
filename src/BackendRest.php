@@ -17,7 +17,6 @@ namespace Dotclear\Plugin\multipleMedia;
 use dcCore;
 use dcMedia;
 use Dotclear\Helper\File\Files;
-use Dotclear\Helper\Html\XmlTag;
 use Exception;
 
 if (!defined('DC_CONTEXT_ADMIN')) {
@@ -26,25 +25,22 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 class BackendRest
 {
-    public static function getMediaInfos($core, $get)
+    public static function getMediaInfos($get, $post)
     {
-        $src_path = !empty($get['path']) ? $get['path'] : '';
-        $src_list = !empty($get['list']) ? $get['list'] : '';
-        $src_pref = !empty($get['pref']) ? $get['pref'] : '';
+        $src_path = !empty($post['path']) ? $post['path'] : '';
+        $src_list = !empty($post['list']) ? json_decode($post['list']) : [];
+        $src_pref = !empty($post['pref']) ? json_decode($post['pref'], true) : [];
 
-        $rsp  = new XmlTag('mm_select');
         $data = [];
-        $ret  = false;
 
         try {
             $media = new dcMedia();
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {
-            // Something goes wrong
-            $rsp->ret = $ret;
-
-            return $rsp;
+            return [
+                'ret' => false,
+            ];
         }
 
         // Get insertion settings (default or JSON local)
@@ -133,11 +129,9 @@ class BackendRest
             'pwd'  => $media->getPwd(),
         ];
 
-        // Prepare return values
-
-        $rsp->data = json_encode($data, JSON_THROW_ON_ERROR);
-        $rsp->ret  = true;
-
-        return $rsp;
+        return [
+            'ret'  => true,
+            'info' => $data,
+        ];
     }
 }

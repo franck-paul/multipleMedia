@@ -317,35 +317,22 @@ $(() => {
 
   // Multiple media insertion helpers
   dotclear.mm_select.getInfos = (path, list, pref, tb, fn) => {
+    list = JSON.stringify(list);
+    pref = JSON.stringify(pref);
     // Call REST Service
-    $.get('services.php', {
-      f: 'getMediaInfos',
-      xd_check: dotclear.nonce,
-      path,
-      list,
-      pref,
-    })
-      .done((data) => {
-        if ($('rsp[status=failed]', data).length > 0) {
-          // For debugging purpose only:
-          // console.log($('rsp',data).attr('message'));
-          window.console.log('Dotclear REST server error');
-        } else {
-          // ret -> status (true/false)
-          // data -> media infos
-          const ret = Number($('rsp>mm_select', data).attr('ret'));
-          if (ret) {
-            const json = $('rsp>mm_select', data).attr('data');
-            fn(tb, JSON.parse(json));
-          }
+    dotclear.jsonServicesPost(
+      'getMediaInfos',
+      (data) => {
+        if (data.ret) {
+          fn(tb, data.info);
         }
-      })
-      .fail((jqXHR, textStatus, errorThrown) => {
-        window.console.log(`AJAX ${textStatus} (status: ${jqXHR.status} ${errorThrown})`);
-      })
-      .always(() => {
-        // Nothing here
-      });
+      },
+      {
+        path,
+        list,
+        pref,
+      },
+    );
 
     return null;
   };
