@@ -64,7 +64,7 @@ class BackendBehaviors
             $data['style'] = [  // List of styles used
                 'class'  => false,
                 'left'   => 'float: left; margin: 0 1em 1em 0;',
-                'center' => 'margin: 0 auto; display: block;',
+                'center' => 'margin: 0 auto; display: table;',
                 'right'  => 'float: right; margin: 0 0 1em 1em;',
             ];
         } else {
