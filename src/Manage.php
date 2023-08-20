@@ -16,8 +16,9 @@ namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
 use dcMedia;
-use dcNsProcess;
-use dcPage;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Form\Button;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
@@ -29,19 +30,15 @@ use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
-class Manage extends dcNsProcess
+class Manage extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::MANAGE)
-            // Only in popup mode
-            && !empty($_REQUEST['popup']);
-
-        return static::$init;
+        // Only in popup mode
+        return self::status(My::checkContext(My::MANAGE) && !empty($_REQUEST['popup']));
     }
 
     /**
@@ -49,7 +46,7 @@ class Manage extends dcNsProcess
      */
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
@@ -61,11 +58,11 @@ class Manage extends dcNsProcess
      */
     public static function render(): void
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return;
         }
 
-        $head = dcPage::jsModuleLoad(My::id() . '/js/popup_media_prefs.js');
+        $head = My::jsLoad('popup_media_prefs.js');
 
         $src_path = !empty($_REQUEST['d']) ? $_REQUEST['d'] : '';
 
@@ -77,15 +74,15 @@ class Manage extends dcNsProcess
             return;
         }
 
-        dcPage::openModule(__('Insert multiple media'), $head);
+        Page::openModule(__('Insert multiple media'), $head);
 
-        echo dcPage::breadcrumb(
+        echo Page::breadcrumb(
             [
                 Html::escapeHTML(dcCore::app()->blog->name) => '',
                 __('Insert multiple media')                 => '',
             ]
         );
-        echo dcPage::notices();
+        echo Notices::getNotices();
 
         // Form
         $defaults = [
@@ -111,8 +108,7 @@ class Manage extends dcNsProcess
                     }
                 }
             }
-        } catch (Exception $e) {
-            // Ignore exceptions
+        } catch (Exception) {
         }
 
         $img_sizes = [];
@@ -195,6 +191,6 @@ class Manage extends dcNsProcess
             ])
         ->render();
 
-        dcPage::closeModule();
+        Page::closeModule();
     }
 }

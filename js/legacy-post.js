@@ -48,7 +48,7 @@ $(() => {
     const doInsert = (tb, infos) => {
       // insert selected media
       if (infos.settings?.block) {
-        const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+        const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`///html\n<${elt}>\n///\n`, `///html\n</${infos.settings.block}>\n///\n`);
       }
       Object.values(infos.list).forEach((media) => {
@@ -94,7 +94,7 @@ $(() => {
     const doInsert = (tb, infos) => {
       // insert selected media
       if (infos.settings?.block) {
-        const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+        const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
       }
       Object.values(infos.list).forEach((media) => {
@@ -107,11 +107,11 @@ $(() => {
             .replace('"', '&quot;')}"`;
 
           if (infos.settings.alignment == 'left') {
-            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.left + '"';
+            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.left}"`;
           } else if (infos.settings.alignment == 'right') {
-            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.right + '"';
+            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.right}"`;
           } else if (infos.settings.alignment == 'center') {
-            res += ' ' + (dotclear.mm_select.style.class ? 'class' : 'style') + '="' + dotclear.mm_select.style.center + '"';
+            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.center}"`;
           }
 
           if (media.description) {
@@ -258,7 +258,7 @@ $(() => {
     const doInsert = (tb, infos) => {
       // insert selected media
       if (infos.settings?.block) {
-        const elt = infos.settings.block + (infos.settings?.class ? ' class="' + infos.settings?.class + '"' : '');
+        const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
       }
       Object.values(infos.list).forEach((media) => {

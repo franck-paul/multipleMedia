@@ -16,7 +16,7 @@ namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
 use dcNamespace;
-use dcPage;
+use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
@@ -35,13 +35,13 @@ class BackendBehaviors
         }
 
         return
-        dcPage::jsJson('mm_media_manager', [
-            'url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+        Page::jsJson('mm_media_manager', [
+            'url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
                 'popup' => 1,
                 'd'     => '',
             ], '&'),
         ]) .
-        dcPage::jsModuleLoad(My::id() . '/js/popup_media_manager.js');
+        My::jsLoad('popup_media_manager.js');
     }
 
     public static function adminPostEditor($editor = '')
@@ -52,33 +52,23 @@ class BackendBehaviors
 
         $data = [
             'title'    => __('Insert multiple media'),
-            'icon'     => urldecode(dcPage::getPF(My::id() . '/icon.svg')),
-            'open_url' => dcCore::app()->adminurl->get('admin.media', [
+            'icon'     => urldecode(Page::getPF(My::id() . '/icon.svg')),
+            'open_url' => dcCore::app()->admin->url->get('admin.media', [
                 'popup'     => 1,
                 'plugin_id' => 'dcLegacyEditor',
                 'select'    => 2,   // sélection multiple
             ], '&'),
-        ];
-
-        if (version_compare(preg_replace('/\-dev.*$/', '', DC_VERSION), '2.27', '<')) {
-            $data['style'] = [  // List of styles used
-                'class'  => false,
-                'left'   => 'float: left; margin: 0 1em 1em 0;',
-                'center' => 'margin: 0 auto; display: table;',
-                'right'  => 'float: right; margin: 0 0 1em 1em;',
-            ];
-        } else {
-            $data['style'] = [  // List of classes used
+            'style' => [  // List of classes used
                 'class'  => true,
                 'left'   => 'media-left',
                 'center' => 'media-center',
                 'right'  => 'media-right',
-            ];
-        }
+            ],
+        ];
 
         return
-            dcPage::jsJson('mm_select', $data) .
-            dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));
+            Page::jsJson('mm_select', $data) .
+            My::jsLoad('legacy-post.js');
     }
 
     public static function adminBlogPreferencesForm()

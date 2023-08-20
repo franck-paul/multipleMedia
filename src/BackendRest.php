@@ -71,8 +71,7 @@ class BackendRest
                     }
                 }
             }
-        } catch (Exception $e) {
-            // Ignore exceptions
+        } catch (Exception) {
         }
 
         // Merge user setting (from popup)
