@@ -76,7 +76,7 @@ class BackendBehaviors
         /**
          * @var        \dcNamespace
          */
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
 
         $block_combo = [
             __('None')    => '',
@@ -116,7 +116,7 @@ class BackendBehaviors
         /**
          * @var        \dcNamespace
          */
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
 
         $settings->put('block', $_POST['multiplemedia_block'], dcNamespace::NS_STRING);
         $settings->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', dcNamespace::NS_STRING);

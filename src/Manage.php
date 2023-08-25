@@ -74,7 +74,7 @@ class Manage extends Process
             return;
         }
 
-        Page::openModule(__('Insert multiple media'), $head);
+        Page::openModule(My::name(), $head);
 
         echo Page::breadcrumb(
             [

@@ -44,7 +44,7 @@ class Install extends Process
             }
 
             // Add default settings
-            $settings = dcCore::app()->blog->settings->get(My::id());
+            $settings = My::settings();
             $settings->put('block', '', dcNamespace::NS_STRING, 'Container element', true, true);
             $settings->put('class', '', dcNamespace::NS_STRING, 'Element class', true, true);
         } catch (Exception $e) {

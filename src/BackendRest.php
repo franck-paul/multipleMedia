@@ -45,7 +45,7 @@ class BackendRest
 
         // Get insertion settings (default or JSON local)
 
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         $defaults = [
             'block'     => $settings->block ?: '',
             'class'     => $settings->class ?: '',
