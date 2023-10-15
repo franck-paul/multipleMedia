@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
-use dcMedia;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
@@ -67,7 +66,7 @@ class Manage extends Process
         $src_path = !empty($_REQUEST['d']) ? $_REQUEST['d'] : '';
 
         try {
-            $media = new dcMedia();
+            $media = dcCore::app()->media;
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {
@@ -112,7 +111,7 @@ class Manage extends Process
         }
 
         $img_sizes = [];
-        foreach ($media->thumb_sizes as $code => $size) {
+        foreach ($media->getThumbSizes() as $code => $size) {
             $img_sizes[__($size[2])] = $code;
         }
         $sizes = [];

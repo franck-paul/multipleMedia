@@ -15,17 +15,18 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
-use dcMedia;
 use Dotclear\Helper\File\Files;
 use Exception;
 
-if (!defined('DC_CONTEXT_ADMIN')) {
-    return;
-}
-
 class BackendRest
 {
-    public static function getMediaInfos($get, $post)
+    /**
+     * @param      array<string, string>   $get    The cleaned $_GET
+     * @param      array<string, string>   $post   The cleaned $_POST
+     *
+     * @return     array<string, mixed>
+     */
+    public static function getMediaInfos($get, $post): array
     {
         $src_path = !empty($post['path']) ? $post['path'] : '';
         $src_list = !empty($post['list']) ? json_decode($post['list']) : [];
@@ -34,7 +35,7 @@ class BackendRest
         $data = [];
 
         try {
-            $media = new dcMedia();
+            $media = dcCore::app()->media;
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {
@@ -99,7 +100,7 @@ class BackendRest
         };
 
         $list = [];
-        foreach ($media->dir['files'] as $file) {
+        foreach ($media->getFiles() as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
                 $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;  // @phpstan-ignore-line

@@ -28,15 +28,15 @@ use Dotclear\Helper\Html\Html;
 
 class BackendBehaviors
 {
-    public static function adminPopupMediaManager($editor = '')
+    public static function adminPopupMediaManager(string $editor = ''): string
     {
         if (empty($editor) || ($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor')) {
-            return;
+            return '';
         }
 
         return
         Page::jsJson('mm_media_manager', [
-            'url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
+            'url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
                 'popup' => 1,
                 'd'     => '',
             ], '&'),
@@ -44,16 +44,16 @@ class BackendBehaviors
         My::jsLoad('popup_media_manager.js');
     }
 
-    public static function adminPostEditor($editor = '')
+    public static function adminPostEditor(string $editor = ''): string
     {
         if (empty($editor) || $editor != 'dcLegacyEditor') {
-            return;
+            return '';
         }
 
         $data = [
             'title'    => __('Insert multiple media'),
             'icon'     => urldecode(Page::getPF(My::id() . '/icon.svg')),
-            'open_url' => dcCore::app()->admin->url->get('admin.media', [
+            'open_url' => dcCore::app()->adminurl->get('admin.media', [
                 'popup'     => 1,
                 'plugin_id' => 'dcLegacyEditor',
                 'select'    => 2,   // sélection multiple
@@ -71,7 +71,7 @@ class BackendBehaviors
             My::jsLoad('legacy-post.js');
     }
 
-    public static function adminBlogPreferencesForm()
+    public static function adminBlogPreferencesForm(): string
     {
         /**
          * @var        \dcNamespace
@@ -109,9 +109,11 @@ class BackendBehaviors
             ]),
         ])
         ->render();
+
+        return '';
     }
 
-    public static function adminBeforeBlogSettingsUpdate()
+    public static function adminBeforeBlogSettingsUpdate(): string
     {
         /**
          * @var        \dcNamespace
@@ -120,5 +122,7 @@ class BackendBehaviors
 
         $settings->put('block', $_POST['multiplemedia_block'], dcNamespace::NS_STRING);
         $settings->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', dcNamespace::NS_STRING);
+
+        return '';
     }
 }
