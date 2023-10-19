@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
+use Dotclear\App;
 use Dotclear\Helper\File\Files;
 use Exception;
 
@@ -50,10 +51,10 @@ class BackendRest
         $defaults = [
             'block'     => $settings->block ?: '',
             'class'     => $settings->class ?: '',
-            'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
-            'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
-            'legend'    => dcCore::app()->blog->settings->system->media_img_default_legend ?: 'legend',
+            'size'      => App::blog()->settings()->system->media_img_default_size ?: 'm',
+            'alignment' => App::blog()->settings()->system->media_img_default_alignment ?: 'none',
+            'link'      => (bool) App::blog()->settings()->system->media_img_default_link,
+            'legend'    => App::blog()->settings()->system->media_img_default_legend ?: 'legend',
             'mediadef'  => false,
         ];
 

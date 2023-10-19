@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
@@ -77,18 +78,18 @@ class Manage extends Process
 
         echo Page::breadcrumb(
             [
-                Html::escapeHTML(dcCore::app()->blog->name) => '',
-                __('Insert multiple media')                 => '',
+                Html::escapeHTML(App::blog()->name()) => '',
+                __('Insert multiple media')           => '',
             ]
         );
         echo Notices::getNotices();
 
         // Form
         $defaults = [
-            'size'      => dcCore::app()->blog->settings->system->media_img_default_size ?: 'm',
-            'alignment' => dcCore::app()->blog->settings->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) dcCore::app()->blog->settings->system->media_img_default_link,
-            'legend'    => dcCore::app()->blog->settings->system->media_img_default_legend ?: 'legend',
+            'size'      => App::blog()->settings()->system->media_img_default_size ?: 'm',
+            'alignment' => App::blog()->settings()->system->media_img_default_alignment ?: 'none',
+            'link'      => (bool) App::blog()->settings()->system->media_img_default_link,
+            'legend'    => App::blog()->settings()->system->media_img_default_legend ?: 'legend',
             'mediadef'  => false,
         ];
 
