@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\multipleMedia;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -67,7 +66,7 @@ class Manage extends Process
         $src_path = !empty($_REQUEST['d']) ? $_REQUEST['d'] : '';
 
         try {
-            $media = dcCore::app()->media;
+            $media = App::media();
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {

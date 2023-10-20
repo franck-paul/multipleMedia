@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\multipleMedia;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Helper\File\Files;
 use Exception;
@@ -36,7 +35,7 @@ class BackendRest
         $data = [];
 
         try {
-            $media = dcCore::app()->media;
+            $media = App::media();
             $media->chdir($src_path);
             $media->getDir();
         } catch (Exception $e) {

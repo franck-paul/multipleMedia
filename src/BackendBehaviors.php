@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\multipleMedia;
 
-use dcCore;
-use dcNamespace;
+use Dotclear\App;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Input;
@@ -36,7 +35,7 @@ class BackendBehaviors
 
         return
         Page::jsJson('mm_media_manager', [
-            'url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+            'url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
                 'popup' => 1,
                 'd'     => '',
             ], '&'),
@@ -53,7 +52,7 @@ class BackendBehaviors
         $data = [
             'title'    => __('Insert multiple media'),
             'icon'     => urldecode(Page::getPF(My::id() . '/icon.svg')),
-            'open_url' => dcCore::app()->adminurl->get('admin.media', [
+            'open_url' => App::backend()->url()->get('admin.media', [
                 'popup'     => 1,
                 'plugin_id' => 'dcLegacyEditor',
                 'select'    => 2,   // sélection multiple
@@ -73,9 +72,6 @@ class BackendBehaviors
 
     public static function adminBlogPreferencesForm(): string
     {
-        /**
-         * @var        \dcNamespace
-         */
         $settings = My::settings();
 
         $block_combo = [
@@ -115,13 +111,10 @@ class BackendBehaviors
 
     public static function adminBeforeBlogSettingsUpdate(): string
     {
-        /**
-         * @var        \dcNamespace
-         */
         $settings = My::settings();
 
-        $settings->put('block', $_POST['multiplemedia_block'], dcNamespace::NS_STRING);
-        $settings->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', dcNamespace::NS_STRING);
+        $settings->put('block', $_POST['multiplemedia_block'], App::blogWorkspace()::NS_STRING);
+        $settings->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', App::blogWorkspace()::NS_STRING);
 
         return '';
     }

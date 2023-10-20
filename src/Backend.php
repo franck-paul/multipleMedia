@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\multipleMedia;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Backend extends Process
@@ -34,7 +34,7 @@ class Backend extends Process
         }
 
         // Register Behaviors
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'adminPopupMediaManager'        => BackendBehaviors::adminPopupMediaManager(...),
             'adminPostEditor'               => BackendBehaviors::adminPostEditor(...),
             'adminBlogPreferencesFormV2'    => BackendBehaviors::adminBlogPreferencesForm(...),
@@ -42,7 +42,7 @@ class Backend extends Process
         ]);
 
         // Register REST methods
-        dcCore::app()->rest->addFunction('getMediaInfos', BackendRest::getMediaInfos(...));
+        App::rest()->addFunction('getMediaInfos', BackendRest::getMediaInfos(...));
 
         return true;
     }
