@@ -103,7 +103,7 @@ class BackendRest
         foreach ($media->getFiles() as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
-                $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;  // @phpstan-ignore-line
+                $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;
                 $title = $file->media_title ?? '';
                 if ($title == $file->basename || Files::tidyFileName($title) == $file->basename) {
                     $title = '';
