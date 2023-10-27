@@ -34,20 +34,18 @@ class Install extends Process
         try {
             // Update
             $old_version = App::version()->getVersion(My::id());
-            if (version_compare((string) $old_version, '3.0', '<')) {
-                // Rename settings namespace
-                if (App::blog()->settings()->exists('multiplemedia')) {
-                    App::blog()->settings()->delWorkspace(My::id());
-                    App::blog()->settings()->renWorkspace('multiplemedia', My::id());
-                }
+            // Rename settings namespace
+            if (version_compare((string) $old_version, '3.0', '<') && App::blog()->settings()->exists('multiplemedia')) {
+                App::blog()->settings()->delWorkspace(My::id());
+                App::blog()->settings()->renWorkspace('multiplemedia', My::id());
             }
 
             // Add default settings
             $settings = My::settings();
             $settings->put('block', '', App::blogWorkspace()::NS_STRING, 'Container element', true, true);
             $settings->put('class', '', App::blogWorkspace()::NS_STRING, 'Element class', true, true);
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         return true;

@@ -28,9 +28,9 @@ class BackendRest
      */
     public static function getMediaInfos($get, $post): array
     {
-        $src_path = !empty($post['path']) ? $post['path'] : '';
-        $src_list = !empty($post['list']) ? json_decode($post['list']) : [];
-        $src_pref = !empty($post['pref']) ? json_decode($post['pref'], true) : [];
+        $src_path = empty($post['path']) ? '' : $post['path'];
+        $src_list = empty($post['list']) ? [] : json_decode($post['list']);
+        $src_pref = empty($post['pref']) ? [] : json_decode($post['pref'], true);
 
         $data = [];
 
@@ -38,7 +38,7 @@ class BackendRest
             $media = App::media();
             $media->chdir($src_path);
             $media->getDir();
-        } catch (Exception $e) {
+        } catch (Exception) {
             return [
                 'ret' => false,
             ];
@@ -62,11 +62,12 @@ class BackendRest
             if (!file_exists($local)) {
                 $local .= '.json';
             }
+
             if (file_exists($local)) {
                 $specifics = file_get_contents($local);
                 if ($specifics !== false) {
                     $specifics = json_decode($specifics, true, 512, JSON_THROW_ON_ERROR);
-                    foreach ($defaults as $key => $value) {
+                    foreach (array_keys($defaults) as $key) {
                         $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
                         $defaults['mediadef'] = true;
                     }
@@ -87,7 +88,7 @@ class BackendRest
 
         // Get full information for each media in list
 
-        $get_img_desc = function ($f, $default = '') {
+        $get_img_desc = static function ($f, $default = '') {
             if ((is_countable($f->media_meta) ? count($f->media_meta) : 0) > 0) {
                 foreach ($f->media_meta as $k => $v) {
                     if ((string) $v && ($k == 'Description')) {
@@ -95,7 +96,6 @@ class BackendRest
                     }
                 }
             }
-
             return (string) $default;
         };
 
@@ -108,6 +108,7 @@ class BackendRest
                 if ($title == $file->basename || Files::tidyFileName($title) == $file->basename) {
                     $title = '';
                 }
+
                 $description = $get_img_desc($file, $title);
                 // Add media
                 $list[] = [

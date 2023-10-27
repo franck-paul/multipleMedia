@@ -45,11 +45,7 @@ class Manage extends Process
      */
     public static function process(): bool
     {
-        if (!self::status()) {
-            return false;
-        }
-
-        return true;
+        return (bool) self::status();
     }
 
     /**
@@ -63,13 +59,13 @@ class Manage extends Process
 
         $head = My::jsLoad('popup_media_prefs.js');
 
-        $src_path = !empty($_REQUEST['d']) ? $_REQUEST['d'] : '';
+        $src_path = empty($_REQUEST['d']) ? '' : $_REQUEST['d'];
 
         try {
             $media = App::media();
             $media->chdir($src_path);
             $media->getDir();
-        } catch (Exception $e) {
+        } catch (Exception) {
             return;
         }
 
@@ -97,11 +93,12 @@ class Manage extends Process
             if (!file_exists($local)) {
                 $local .= '.json';
             }
+
             if (file_exists($local)) {
                 $specifics = file_get_contents($local);
                 if ($specifics !== false) {
                     $specifics = json_decode($specifics, true, 512, JSON_THROW_ON_ERROR);
-                    foreach ($defaults as $key => $value) {
+                    foreach (array_keys($defaults) as $key) {
                         $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
                         $defaults['mediadef'] = true;
                     }
@@ -114,6 +111,7 @@ class Manage extends Process
         foreach ($media->getThumbSizes() as $code => $size) {
             $img_sizes[__($size[2])] = $code;
         }
+
         $sizes = [];
         $i     = 0;
         foreach (array_reverse($img_sizes, true) as $k => $v) {
@@ -121,6 +119,7 @@ class Manage extends Process
                     ->value(Html::escapeHTML($v))
                     ->label((new Label($k, Label::INSIDE_TEXT_AFTER)));
         }
+
         $sizes[] = (new Radio(['src', 'src' . ++$i]))
                 ->value(Html::escapeHTML('o'))
                 ->label((new Label(__('original'), Label::INSIDE_TEXT_AFTER)));

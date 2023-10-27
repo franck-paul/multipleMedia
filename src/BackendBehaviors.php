@@ -29,7 +29,7 @@ class BackendBehaviors
 {
     public static function adminPopupMediaManager(string $editor = ''): string
     {
-        if (empty($editor) || ($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor')) {
+        if ($editor === '' || ($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor')) {
             return '';
         }
 
@@ -45,7 +45,7 @@ class BackendBehaviors
 
     public static function adminPostEditor(string $editor = ''): string
     {
-        if (empty($editor) || $editor != 'dcLegacyEditor') {
+        if ($editor === '' || $editor != 'dcLegacyEditor') {
             return '';
         }
 
@@ -114,7 +114,7 @@ class BackendBehaviors
         $settings = My::settings();
 
         $settings->put('block', $_POST['multiplemedia_block'], App::blogWorkspace()::NS_STRING);
-        $settings->put('class', !empty($_POST['multiplemedia_class']) ? $_POST['multiplemedia_class'] : '', App::blogWorkspace()::NS_STRING);
+        $settings->put('class', empty($_POST['multiplemedia_class']) ? '' : $_POST['multiplemedia_class'], App::blogWorkspace()::NS_STRING);
 
         return '';
     }
