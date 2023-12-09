@@ -63,6 +63,7 @@ class BackendBehaviors
                 'center' => 'media-center',
                 'right'  => 'media-right',
             ],
+            'img_link_title' => __('Open this media'),
         ];
 
         return

@@ -96,6 +96,7 @@ class BackendRest
                     }
                 }
             }
+
             return (string) $default;
         };
 

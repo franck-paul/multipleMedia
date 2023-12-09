@@ -41,8 +41,8 @@ $(() => {
 
   // Wiki
   jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
-    const d = this.elements.mm_select.data;
-    if (d === undefined || d.list.length === 0) {
+    const { data } = this.elements.mm_select;
+    if (data === undefined || data.list.length === 0) {
       return;
     }
     const doInsert = (tb, infos) => {
@@ -53,7 +53,15 @@ $(() => {
       }
       Object.values(infos.list).forEach((media) => {
         tb.encloseSelection('', '', (str) => {
-          const alt = str ? str : media.title;
+          const alt = (str || media.title)
+            .replace('&', '&amp;')
+            .replace('>', '&gt;')
+            .replace('<', '&lt;')
+            .replace('"', '&quot;');
+          const legend =
+            media.description !== '' && alt.length // No legend if no alt
+              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
+              : false;
           let res = `((${tb.stripBaseURL(media.src)}|${alt}`;
 
           if (infos.settings.alignment == 'left') {
@@ -62,197 +70,33 @@ $(() => {
             res += '|R';
           } else if (infos.settings.alignment == 'center') {
             res += '|C';
-          } else if (media.description) {
+          } else if (legend) {
             res += '|';
           }
-          if (media.title) {
-            res += `|${media.title}`;
+          if (legend) {
+            res += `|`; // no title in img
+            res += `|${legend}`;
           }
-          if (media.description) {
-            res += `|${media.description}`;
-          }
-
           res += '))';
 
-          if (infos.settings.link) {
-            return `[${res}|${tb.stripBaseURL(media.url)}${alt ? `||${alt}` : ''}]\n`;
+          if (infos.settings.link && alt.length) {
+            // Link only if alt not empty
+            return `[${res}|${tb.stripBaseURL(media.url)}${
+              dotclear.mm_select.img_link_title ? `||${dotclear.mm_select.img_link_title}` : ''
+            }]`;
           }
 
           return `${res}\n`;
         });
       });
     };
-    dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
+    dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
   };
 
   // HTML (source)
   jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
-    const d = this.elements.mm_select.data;
-    if (d === undefined || d.list.length === 0) {
-      return;
-    }
-    const doInsert = (tb, infos) => {
-      // insert selected media
-      if (infos.settings?.block) {
-        const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
-        tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
-      }
-      Object.values(infos.list).forEach((media) => {
-        tb.encloseSelection('', '', (str) => {
-          const alt = str ? str : media.title;
-          let res = `<img src="${tb.stripBaseURL(media.src)}" alt="${alt
-            .replace('&', '&amp;')
-            .replace('>', '&gt;')
-            .replace('<', '&lt;')
-            .replace('"', '&quot;')}"`;
-
-          if (infos.settings.alignment == 'left') {
-            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.left}"`;
-          } else if (infos.settings.alignment == 'right') {
-            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.right}"`;
-          } else if (infos.settings.alignment == 'center') {
-            res += ` ${dotclear.mm_select.style.class ? 'class' : 'style'}="${dotclear.mm_select.style.center}"`;
-          }
-
-          if (media.description) {
-            res += ` title="${media.description
-              .replace('&', '&amp;')
-              .replace('>', '&gt;')
-              .replace('<', '&lt;')
-              .replace('"', '&quot;')}"`;
-          }
-
-          res += ' />';
-
-          if (infos.settings.link) {
-            const ltitle = alt
-              ? ` title="${alt.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')}"`
-              : '';
-            return `<a href="${tb.stripBaseURL(media.url)}"${ltitle}>${res}</a>`;
-          }
-
-          return `${res}\n`;
-        });
-      });
-    };
-    dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
-  };
-
-  // HTML (wysiwyg)
-  jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
-    const d = this.elements.mm_select.data;
-    if (d === undefined || d.list.length === 0) {
-      return;
-    }
-    const doInsert = (tb, infos) => {
-      let container = undefined;
-      // insert selected media
-      if (infos.settings?.block) {
-        container = tb.iwin.document.createElement(infos.settings.block);
-        if (infos.settings?.class) {
-          container.setAttribute('class', infos.settings?.class);
-        }
-      }
-      Object.values(infos.list)
-        .reverse()
-        .forEach((media) => {
-          const alt = tb.getSelectedText() ? tb.getSelectedText() : media.title;
-          if (media.src == undefined) {
-            return;
-          }
-
-          const fig = media.description ? tb.iwin.document.createElement('figure') : null;
-          const img = tb.iwin.document.createElement('img');
-          const block = media.description ? fig : img;
-
-          if (infos.settings.alignment == 'left') {
-            if (dotclear.mm_select.style.class) {
-              block.classList.add(dotclear.mm_select.style.left);
-            } else {
-              if (block.style.styleFloat == undefined) {
-                block.style.cssFloat = 'left';
-              } else {
-                block.style.styleFloat = 'left';
-              }
-              block.style.marginTop = 0;
-              block.style.marginRight = '1em';
-              block.style.marginBottom = '1em';
-              block.style.marginLeft = 0;
-            }
-          } else if (infos.settings.alignment == 'right') {
-            if (dotclear.mm_select.style.class) {
-              block.classList.add('dotclear.mm_select.style.right');
-            } else {
-              if (block.style.styleFloat == undefined) {
-                block.style.cssFloat = 'right';
-              } else {
-                block.style.styleFloat = 'right';
-              }
-              block.style.marginTop = 0;
-              block.style.marginRight = 0;
-              block.style.marginBottom = '1em';
-              block.style.marginLeft = '1em';
-            }
-          } else if (infos.settings.alignment == 'center') {
-            if (dotclear.mm_select.style.class) {
-              block.classList.add(dotclear.mm_select.style.center);
-            } else {
-              if (media.description) {
-                block.style.textAlign = 'center';
-              } else {
-                block.style.marginTop = 0;
-                block.style.marginRight = 'auto';
-                block.style.marginBottom = 0;
-                block.style.marginLeft = 'auto';
-                block.style.display = 'block';
-              }
-            }
-          }
-
-          img.src = tb.stripBaseURL(media.src);
-          img.setAttribute('alt', alt);
-          if (media.title) {
-            img.setAttribute('title', media.title);
-          }
-          if (media.description) {
-            const figcaption = tb.iwin.document.createElement('figcaption');
-            figcaption.appendChild(tb.iwin.document.createTextNode(media.description));
-            fig.appendChild(img);
-            fig.appendChild(figcaption);
-          }
-
-          if (infos.settings.link) {
-            const a = tb.iwin.document.createElement('a');
-            a.href = tb.stripBaseURL(media.url);
-            if (alt) {
-              a.setAttribute('title', alt);
-            }
-            a.appendChild(block);
-            if (container === undefined) {
-              tb.insertNode(a);
-            } else {
-              container.appendChild(a);
-            }
-          } else {
-            if (container === undefined) {
-              tb.insertNode(block);
-            } else {
-              container.appendChild(block);
-            }
-          }
-        });
-      if (container !== undefined) {
-        tb.insertNode(container);
-      }
-    };
-
-    dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
-  };
-
-  // Markdown
-  jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
-    const d = this.elements.mm_select.data;
-    if (d === undefined || d.list.length === 0) {
+    const { data } = this.elements.mm_select;
+    if (data === undefined || data.list.length === 0) {
       return;
     }
     const doInsert = (tb, infos) => {
@@ -268,39 +112,41 @@ $(() => {
             right: dotclear.mm_select.style.right,
             center: dotclear.mm_select.style.center,
           };
-          const alt = (str ? str : media.title)
+          const alt = (str || media.title)
             .replace('&', '&amp;')
             .replace('>', '&gt;')
             .replace('<', '&lt;')
             .replace('"', '&quot;');
-          const legend =
-            media.description !== ''
+          let legend =
+            media.description !== '' && alt.length // No legend if no alt
               ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
               : false;
+          // Do not duplicate information
+          if (alt === legend) legend = false;
           let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${alt}"`;
           let figure = '<figure';
           const caption = legend ? `<figcaption>${legend}</figcaption>\n` : '';
 
-          if (legend) {
-            img = `${img} title="${legend}"`;
-          }
-
           // Cope with required alignment
           if (infos.settings.alignment in alignments) {
             if (legend) {
-              figure = `${figure} ${alignments[infos.settings.alignment]}"`;
+              figure = `${figure} class="${alignments[infos.settings.alignment]}"`;
             } else {
-              img = `${img} ${alignments[infos.settings.alignment]}"`;
+              img = `${img} class="${alignments[infos.settings.alignment]}"`;
             }
           }
 
-          img = `${img} />`;
+          img = `${img}>`;
           figure = `${figure}>`;
 
-          if (infos.settings.link) {
-            // Enclose image with link
-            const ltitle = alt
-              ? ` title="${alt.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')}"`
+          if (infos.settings.link && alt.length) {
+            // Enclose image with link (only if non empty alt)
+            const ltitle = dotclear.mm_select.img_link_title
+              ? ` title="${dotclear.mm_select.img_link_title
+                  .replace('&', '&amp;')
+                  .replace('>', '&gt;')
+                  .replace('<', '&lt;')
+                  .replace('"', '&quot;')}"`
               : '';
             img = `<a href="${tb.stripBaseURL(media.url)}"${ltitle}>${img}</a>`;
           }
@@ -309,7 +155,166 @@ $(() => {
         });
       });
     };
-    dotclear.mm_select.getInfos(d.path, d.list, d.pref, this, doInsert);
+    dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
+  };
+
+  // HTML (wysiwyg)
+  jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
+    const { data } = this.elements.mm_select;
+    if (data === undefined || data.list.length === 0) {
+      return;
+    }
+    const doInsert = (tb, infos) => {
+      let container;
+      // insert selected media
+      if (infos.settings?.block) {
+        container = tb.iwin.document.createElement(infos.settings.block);
+        if (infos.settings?.class) {
+          container.setAttribute('class', infos.settings?.class);
+        }
+      }
+      Object.values(infos.list)
+        .reverse()
+        .forEach((media) => {
+          if (media.src == undefined) {
+            return;
+          }
+
+          const alignments = {
+            left: dotclear.mm_select.style.left,
+            right: dotclear.mm_select.style.right,
+            center: dotclear.mm_select.style.center,
+          };
+          const alt = (tb.getSelectedText() ? tb.getSelectedText() : media.title)
+            .replace('&', '&amp;')
+            .replace('>', '&gt;')
+            .replace('<', '&lt;')
+            .replace('"', '&quot;');
+          let legend =
+            media.description !== '' && alt.length // No legend if no alt
+              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
+              : false;
+
+          // Do not duplicate information
+          if (alt === legend) legend = false;
+
+          const fig = legend ? tb.iwin.document.createElement('figure') : null;
+          const img = tb.iwin.document.createElement('img');
+          const block = legend ? fig : img;
+
+          // Cope with required alignment
+          if (infos.settings.alignment in alignments) {
+            block.classList.add(alignments[infos.settings.alignment]);
+          }
+
+          img.src = tb.stripBaseURL(media.src);
+          img.setAttribute('alt', alt);
+          if (legend) {
+            const figcaption = tb.iwin.document.createElement('figcaption');
+            figcaption.appendChild(tb.iwin.document.createTextNode(legend));
+            fig.appendChild(img);
+            fig.appendChild(figcaption);
+          }
+
+          if (infos.settings.link && alt.length) {
+            // Enclose image with link (only if non empty alt)
+            const ltitle = alt
+              ? dotclear.mm_select.img_link_title
+                  .replace('&', '&amp;')
+                  .replace('>', '&gt;')
+                  .replace('<', '&lt;')
+                  .replace('"', '&quot;')
+              : '';
+            const a = tb.iwin.document.createElement('a');
+            a.href = tb.stripBaseURL(media.url);
+            a.setAttribute('title', ltitle);
+            a.appendChild(block);
+            if (container === undefined) {
+              tb.insertNode(a);
+            } else {
+              container.insertNode(a);
+            }
+          } else {
+            if (container === undefined) {
+              tb.insertNode(block);
+            } else {
+              container.insertNode(block);
+            }
+          }
+        });
+      if (container !== undefined) {
+        tb.insertNode(container);
+      }
+    };
+
+    dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
+  };
+
+  // Markdown
+  jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
+    const { data } = this.elements.mm_select;
+    if (data === undefined || data.list.length === 0) {
+      return;
+    }
+    const doInsert = (tb, infos) => {
+      // insert selected media
+      if (infos.settings?.block) {
+        const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
+        tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
+      }
+      Object.values(infos.list).forEach((media) => {
+        tb.encloseSelection('', '', (str) => {
+          const alignments = {
+            left: dotclear.mm_select.style.left,
+            right: dotclear.mm_select.style.right,
+            center: dotclear.mm_select.style.center,
+          };
+          const alt = (str || media.title)
+            .replace('&', '&amp;')
+            .replace('>', '&gt;')
+            .replace('<', '&lt;')
+            .replace('"', '&quot;');
+          let legend =
+            media.description !== '' && alt.length // No legend if no alt
+              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
+              : false;
+          // Do not duplicate information
+          if (alt === legend) legend = false;
+          let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${alt}"`;
+          let figure = '<figure';
+          const caption = legend ? `<figcaption>${legend}</figcaption>\n` : '';
+
+          // Cope with required alignment
+          if (infos.settings.alignment in alignments) {
+            if (legend) {
+              figure = `${figure} ${dotclear.mm_select.style.class ? 'class' : 'style'}="${
+                alignments[infos.settings.alignment]
+              }"`;
+            } else {
+              img = `${img} ${dotclear.mm_select.style.class ? 'class' : 'style'}="${alignments[infos.settings.alignment]}"`;
+            }
+          }
+
+          img = `${img}>`;
+          figure = `${figure}>`;
+
+          if (infos.settings.link && alt.length) {
+            // Enclose image with link (only if non empty alt)
+            const ltitle = alt
+              ? ` title="${dotclear.mm_select.img_link_title
+                  .replace('&', '&amp;')
+                  .replace('>', '&gt;')
+                  .replace('<', '&lt;')
+                  .replace('"', '&quot;')}"`
+              : '';
+            img = `<a href="${tb.stripBaseURL(media.url)}"${ltitle}>${img}</a>`;
+          }
+
+          return legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
+        });
+      });
+    };
+    dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
   };
 
   // Get multiple media insertion config
