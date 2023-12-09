@@ -13,6 +13,7 @@ use Dotclear\Helper\L10n;
 
 L10n::$locales['multipleMedia'] = '';
 L10n::$locales['Insert multiple media'] = '';
+L10n::$locales['Open this media'] = '';
 L10n::$locales['None'] = '';
 L10n::$locales['div'] = '';
 L10n::$locales['p'] = '';
