@@ -149,13 +149,13 @@ class Manage extends Process
                         ]),
 
                         (new Div())->class('two-boxes')->items([
-                            (new Text('h3', __('Image legend and title'))),
+                            (new Text('h3', __('Image legend and alternate text'))),
                             (new Radio(['legend', 'legend1'], $defaults['legend'] == 'legend'))
                                 ->value('legend')
-                                ->label((new Label(__('Legend and title'), Label::INSIDE_TEXT_AFTER))),
+                                ->label((new Label(__('Legend and alternate text'), Label::INSIDE_TEXT_AFTER))),
                             (new Radio(['legend', 'legend2'], $defaults['legend'] == 'title'))
                                 ->value('title')
-                                ->label((new Label(__('Title'), Label::INSIDE_TEXT_AFTER))),
+                                ->label((new Label(__('Alternate text'), Label::INSIDE_TEXT_AFTER))),
                             (new Radio(['legend', 'legend3'], $defaults['legend'] == 'none'))
                                 ->value('none')
                                 ->label((new Label(__('None'), Label::INSIDE_TEXT_AFTER))),
