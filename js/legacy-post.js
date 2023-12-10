@@ -39,6 +39,46 @@ $(() => {
     this.elements.mm_select.popup.call(this);
   };
 
+  // Helpers
+
+  /**
+   * Encodes html entities.
+   *
+   * @param      {string}  str     The string
+   * @return     {string}  The encoded string
+   */
+  const encodeHtmlEntities = (str) => {
+    if (str === null || str === '') return '';
+    else str = str.toString();
+    const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+    };
+    return str.replace(/[&<>"']/g, (m) => map[m]);
+  };
+
+  /**
+   * Validate media information (for editor insertion purpose)
+   *
+   * @param      {{selection: string, alt: string, description: string, link: boolean}}   media   The media
+   * @return     {{alt: string, legend: string|false, link: boolean}} validated parameters
+   */
+  const validateMedia = (media) => {
+    // Use selected text or media alternate text or empty string
+    const alt = encodeHtmlEntities(media?.selection || media?.alt || '');
+    // Use media description if exist and only if alternate text is not empty
+    const legend = media?.description && alt.length ? encodeHtmlEntities(media.description) : false;
+    // Return validated data
+    return {
+      alt,
+      legend: alt === legend ? false : legend, // Don't repeat alternate text in legend
+      link: media?.link && alt.length, // Allow link only if alternate text not empty
+    };
+  };
+
   // Wiki
   jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
     const { data } = this.elements.mm_select;
@@ -53,39 +93,34 @@ $(() => {
       }
       Object.values(infos.list).forEach((media) => {
         tb.encloseSelection('', '', (str) => {
-          const alt = (str || media.title)
-            .replace('&', '&amp;')
-            .replace('>', '&gt;')
-            .replace('<', '&lt;')
-            .replace('"', '&quot;');
-          let legend =
-            media.description !== '' && alt.length // No legend if no alt
-              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
-              : false;
-          if (alt === legend) legend = false;
+          const alignments = {
+            left: 'L',
+            right: 'R',
+            center: 'C',
+          };
+          const params = validateMedia({
+            selection: str,
+            alt: media?.title,
+            description: media?.description,
+            link: infos.settings?.link,
+          });
 
           let res = `((${tb.stripBaseURL(media.src)}|${alt}`;
-
-          if (infos.settings.alignment == 'left') {
-            res += '|L';
-          } else if (infos.settings.alignment == 'right') {
-            res += '|R';
-          } else if (infos.settings.alignment == 'center') {
-            res += '|C';
-          } else if (legend) {
+          if (infos.settings.alignment in alignments) {
+            res += `|${alignments[infos.settings.alignment]}`;
+          } else if (params.legend) {
             res += '|';
           }
-          if (legend) {
-            res += `|`; // no title in img
-            res += `|${legend}`;
+          if (params.legend) {
+            res += `||${params.legend}`;
           }
           res += '))';
 
-          if (infos.settings.link && alt.length) {
-            // Link only if alt not empty
-            return `[${res}|${tb.stripBaseURL(media.url)}${
-              dotclear.mm_select.img_link_title ? `||${dotclear.mm_select.img_link_title}` : ''
-            }]`;
+          if (params.link) {
+            const ltitle = dotclear.mm_select.img_link_title
+              ? `||${encodeHtmlEntities(dotclear.mm_select.img_link_title)}`
+              : '';
+            return `[${res}|${tb.stripBaseURL(media.url)}${ltitle}]`;
           }
 
           return `${res}\n`;
@@ -114,24 +149,20 @@ $(() => {
             right: dotclear.mm_select.style.right,
             center: dotclear.mm_select.style.center,
           };
-          const alt = (str || media.title)
-            .replace('&', '&amp;')
-            .replace('>', '&gt;')
-            .replace('<', '&lt;')
-            .replace('"', '&quot;');
-          let legend =
-            media.description !== '' && alt.length // No legend if no alt
-              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
-              : false;
-          // Do not duplicate information
-          if (alt === legend) legend = false;
-          let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${alt}"`;
+          const params = validateMedia({
+            selection: str,
+            alt: media?.title,
+            description: media?.description,
+            link: infos.settings?.link,
+          });
+
+          let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${params.alt}"`;
           let figure = '<figure';
-          const caption = legend ? `<figcaption>${legend}</figcaption>\n` : '';
+          const caption = params.legend ? `<figcaption>${params.legend}</figcaption>\n` : '';
 
           // Cope with required alignment
           if (infos.settings.alignment in alignments) {
-            if (legend) {
+            if (params.legend) {
               figure = `${figure} class="${alignments[infos.settings.alignment]}"`;
             } else {
               img = `${img} class="${alignments[infos.settings.alignment]}"`;
@@ -141,19 +172,14 @@ $(() => {
           img = `${img}>`;
           figure = `${figure}>`;
 
-          if (infos.settings.link && alt.length) {
-            // Enclose image with link (only if non empty alt)
+          if (params.link) {
             const ltitle = dotclear.mm_select.img_link_title
-              ? ` title="${dotclear.mm_select.img_link_title
-                  .replace('&', '&amp;')
-                  .replace('>', '&gt;')
-                  .replace('<', '&lt;')
-                  .replace('"', '&quot;')}"`
+              ? `title="${encodeHtmlEntities(dotclear.mm_select.img_link_title)}"`
               : '';
             img = `<a href="${tb.stripBaseURL(media.url)}"${ltitle}>${img}</a>`;
           }
 
-          return legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
+          return params.legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
         });
       });
     };
@@ -187,22 +213,16 @@ $(() => {
             right: dotclear.mm_select.style.right,
             center: dotclear.mm_select.style.center,
           };
-          const alt = (tb.getSelectedText() ? tb.getSelectedText() : media.title)
-            .replace('&', '&amp;')
-            .replace('>', '&gt;')
-            .replace('<', '&lt;')
-            .replace('"', '&quot;');
-          let legend =
-            media.description !== '' && alt.length // No legend if no alt
-              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
-              : false;
+          const params = validateMedia({
+            selection: str,
+            alt: media?.title,
+            description: media?.description,
+            link: infos.settings?.link,
+          });
 
-          // Do not duplicate information
-          if (alt === legend) legend = false;
-
-          const fig = legend ? tb.iwin.document.createElement('figure') : null;
+          const fig = params.legend ? tb.iwin.document.createElement('figure') : null;
           const img = tb.iwin.document.createElement('img');
-          const block = legend ? fig : img;
+          const block = params.legend ? fig : img;
 
           // Cope with required alignment
           if (infos.settings.alignment in alignments) {
@@ -210,23 +230,16 @@ $(() => {
           }
 
           img.src = tb.stripBaseURL(media.src);
-          img.setAttribute('alt', alt);
-          if (legend) {
+          img.setAttribute('alt', params.alt);
+          if (params.legend) {
             const figcaption = tb.iwin.document.createElement('figcaption');
-            figcaption.appendChild(tb.iwin.document.createTextNode(legend));
+            figcaption.appendChild(tb.iwin.document.createTextNode(params.legend));
             fig.appendChild(img);
             fig.appendChild(figcaption);
           }
 
-          if (infos.settings.link && alt.length) {
-            // Enclose image with link (only if non empty alt)
-            const ltitle = alt
-              ? dotclear.mm_select.img_link_title
-                  .replace('&', '&amp;')
-                  .replace('>', '&gt;')
-                  .replace('<', '&lt;')
-                  .replace('"', '&quot;')
-              : '';
+          if (params.link) {
+            const ltitle = dotclear.mm_select.img_link_title ? encodeHtmlEntities(dotclear.mm_select.img_link_title) : '';
             const a = tb.iwin.document.createElement('a');
             a.href = tb.stripBaseURL(media.url);
             a.setAttribute('title', ltitle);
@@ -236,12 +249,10 @@ $(() => {
             } else {
               container.insertNode(a);
             }
+          } else if (container === undefined) {
+            tb.insertNode(block);
           } else {
-            if (container === undefined) {
-              tb.insertNode(block);
-            } else {
-              container.insertNode(block);
-            }
+            container.insertNode(block);
           }
         });
       if (container !== undefined) {
@@ -271,24 +282,20 @@ $(() => {
             right: dotclear.mm_select.style.right,
             center: dotclear.mm_select.style.center,
           };
-          const alt = (str || media.title)
-            .replace('&', '&amp;')
-            .replace('>', '&gt;')
-            .replace('<', '&lt;')
-            .replace('"', '&quot;');
-          let legend =
-            media.description !== '' && alt.length // No legend if no alt
-              ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
-              : false;
-          // Do not duplicate information
-          if (alt === legend) legend = false;
-          let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${alt}"`;
+          const params = validateMedia({
+            selection: str,
+            alt: media?.title,
+            description: media?.description,
+            link: infos.settings?.link,
+          });
+
+          let img = `<img src="${tb.stripBaseURL(media.src)}" alt="${params.alt}"`;
           let figure = '<figure';
-          const caption = legend ? `<figcaption>${legend}</figcaption>\n` : '';
+          const caption = params.legend ? `<figcaption>${params.legend}</figcaption>\n` : '';
 
           // Cope with required alignment
           if (infos.settings.alignment in alignments) {
-            if (legend) {
+            if (params.legend) {
               figure = `${figure} ${dotclear.mm_select.style.class ? 'class' : 'style'}="${
                 alignments[infos.settings.alignment]
               }"`;
@@ -300,19 +307,13 @@ $(() => {
           img = `${img}>`;
           figure = `${figure}>`;
 
-          if (infos.settings.link && alt.length) {
-            // Enclose image with link (only if non empty alt)
-            const ltitle = alt
-              ? ` title="${dotclear.mm_select.img_link_title
-                  .replace('&', '&amp;')
-                  .replace('>', '&gt;')
-                  .replace('<', '&lt;')
-                  .replace('"', '&quot;')}"`
-              : '';
-            img = `<a href="${tb.stripBaseURL(media.url)}"${ltitle}>${img}</a>`;
+          if (params.link) {
+            const ltitle = dotclear.mm_select.img_link_title ? encodeHtmlEntities(dotclear.mm_select.img_link_title) : '';
+            const title = ltitle ? `title="${ltitle}"` : '';
+            img = `<a href="${tb.stripBaseURL(media.url)}"${title}>${img}</a>`;
           }
 
-          return legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
+          return params.legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
         });
       });
     };
