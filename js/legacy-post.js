@@ -58,10 +58,12 @@ $(() => {
             .replace('>', '&gt;')
             .replace('<', '&lt;')
             .replace('"', '&quot;');
-          const legend =
+          let legend =
             media.description !== '' && alt.length // No legend if no alt
               ? media.description.replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace('"', '&quot;')
               : false;
+          if (alt === legend) legend = false;
+
           let res = `((${tb.stripBaseURL(media.src)}|${alt}`;
 
           if (infos.settings.alignment == 'left') {
