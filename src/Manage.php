@@ -57,7 +57,7 @@ class Manage extends Process
             return;
         }
 
-        $head = My::jsLoad('popup_media_prefs.js');
+        $head = My::jsLoad('dialog_media_prefs.js');
 
         $src_path = empty($_REQUEST['d']) ? '' : $_REQUEST['d'];
 

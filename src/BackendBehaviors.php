@@ -40,7 +40,7 @@ class BackendBehaviors
                 'd'     => '',
             ], '&'),
         ]) .
-        My::jsLoad('popup_media_manager.js');
+        My::jsLoad('dialog_media_manager.js');
     }
 
     public static function adminPostEditor(string $editor = ''): string
