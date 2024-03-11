@@ -105,7 +105,7 @@ $(() => {
             link: infos.settings?.link,
           });
 
-          let res = `((${tb.stripBaseURL(media.src)}|${alt}`;
+          let res = `((${tb.stripBaseURL(media.src)}|${params.alt}`;
           if (infos.settings.alignment in alignments) {
             res += `|${alignments[infos.settings.alignment]}`;
           } else if (params.legend) {
