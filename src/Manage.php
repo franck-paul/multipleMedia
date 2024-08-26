@@ -176,7 +176,7 @@ class Manage extends Process
                                 ->label((new Label(__('As a link to the original image'), Label::INSIDE_TEXT_AFTER))),
                         ]),
 
-                        (new Para())->separator(' ')->items([
+                        (new Para())->separator(' ')->class('form-buttons')->items([
                             (new Hidden(['mediadef'], (string) $defaults['mediadef'])),
                             (new Button('media-insert-ok'))
                                 ->class('submit')

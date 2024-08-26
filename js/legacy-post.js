@@ -249,7 +249,9 @@ $(() => {
             } else {
               container.insertNode(a);
             }
-          } else if (container === undefined) {
+            return;
+          }
+          if (container === undefined) {
             tb.insertNode(block);
           } else {
             container.insertNode(block);
