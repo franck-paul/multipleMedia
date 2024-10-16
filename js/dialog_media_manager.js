@@ -20,7 +20,7 @@ $(() => {
       return;
     }
     // Get some useful info
-    const media_path = document.querySelector('.files-group input[name=d]').value;
+    const media_path = document.querySelector('#form-medias input[name=d]').value;
 
     // Return back selection
     const tb = window.opener.the_toolbar;
