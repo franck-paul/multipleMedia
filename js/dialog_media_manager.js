@@ -11,12 +11,12 @@ $(() => {
 
   function sendCloseMultiple() {
     const insert_form = $('#form-medias').get(0);
-    if (insert_form == undefined) {
+    if (!insert_form) {
       return;
     }
     // Insert all selected media with default options
     const list = document.querySelectorAll('.files-group input[type=checkbox]:checked');
-    if (!list.length) {
+    if (!list?.length) {
       return;
     }
     // Get some useful info
