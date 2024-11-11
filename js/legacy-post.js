@@ -1,7 +1,7 @@
 /*global dotclear, jsToolBar */
 'use strict';
 
-$(() => {
+dotclear.ready(() => {
   dotclear.mm_select = dotclear.getData('mm_select');
 
   // Toolbar button for multiple media insertion
