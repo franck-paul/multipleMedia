@@ -1,7 +1,7 @@
 /*global $ */
 'use strict';
 
-$(() => {
+dotclear.ready(() => {
   $('#media-insert-cancel').on('click', () => {
     window.close();
   });

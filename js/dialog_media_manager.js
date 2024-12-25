@@ -1,7 +1,7 @@
 /*global $ */
 'use strict';
 
-$(() => {
+dotclear.ready(() => {
   const config = dotclear.getData('mm_media_manager');
 
   $('#select_medias').on('click', () => {
