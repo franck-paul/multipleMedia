@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief multipleMedia, a plugin for Dotclear 2
  *
@@ -88,7 +89,7 @@ class BackendRest
 
         // Get full information for each media in list
 
-        $get_img_desc = static function ($f, $default = '') {
+        $get_img_desc = static function ($f, $default = ''): string {
             if ((is_countable($f->media_meta) ? count($f->media_meta) : 0) > 0) {
                 foreach ($f->media_meta as $k => $v) {
                     if ((string) $v && ($k == 'Description')) {

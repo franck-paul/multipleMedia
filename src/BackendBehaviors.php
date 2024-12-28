@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief multipleMedia, a plugin for Dotclear 2
  *
@@ -29,7 +30,7 @@ class BackendBehaviors
 {
     public static function adminPopupMediaManager(string $editor = ''): string
     {
-        if ($editor === '' || ($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor')) {
+        if ($editor === '' || ($editor !== 'dcLegacyEditor' && $editor !== 'dcCKEditor')) {
             return '';
         }
 
@@ -45,7 +46,7 @@ class BackendBehaviors
 
     public static function adminPostEditor(string $editor = ''): string
     {
-        if ($editor === '' || $editor != 'dcLegacyEditor') {
+        if ($editor === '' || $editor !== 'dcLegacyEditor') {
             return '';
         }
 

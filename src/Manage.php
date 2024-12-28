@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief multipleMedia, a plugin for Dotclear 2
  *
@@ -168,7 +169,7 @@ class Manage extends Process
 
                         (new Div())->class('two-boxes')->items([
                             (new Text('h3', __('Image insertion'))),
-                            (new Radio(['insertion', 'insert1'], (bool) !$defaults['link']))
+                            (new Radio(['insertion', 'insert1'], !$defaults['link']))
                                 ->value('simple')
                                 ->label((new Label(__('As a single image'), Label::INSIDE_TEXT_AFTER))),
                             (new Radio(['insertion', 'insert2'], (bool) $defaults['link']))
