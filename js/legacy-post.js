@@ -120,7 +120,7 @@ dotclear.ready(() => {
             const ltitle = dotclear.mm_select.img_link_title
               ? `||${encodeHtmlEntities(dotclear.mm_select.img_link_title)}`
               : '';
-            return `[${res}|${tb.stripBaseURL(media.url)}${ltitle}]`;
+            return `[${res}|${tb.stripBaseURL(media.url)}${ltitle}]\n`;
           }
 
           return `${res}\n`;
