@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use Dotclear\App;
+use Dotclear\Helper\Date;
+use Dotclear\Helper\File\File;
 use Dotclear\Helper\File\Files;
 use Exception;
 
@@ -89,35 +91,104 @@ class BackendRest
 
         // Get full information for each media in list
 
-        $get_img_desc = static function ($f, $default = ''): string {
-            if ((is_countable($f->media_meta) ? count($f->media_meta) : 0) > 0) {
-                foreach ($f->media_meta as $k => $v) {
-                    if ((string) $v && ($k == 'Description')) {
+        // Function to get image alternate text
+        // Copy from src/Process/Backend/MediaItem.php
+        $getImageAlt = function (?File $file, bool $fallback = true): string {
+            if (!$file instanceof File) {
+                return '';
+            }
+
+            // Use metadata AltText if present
+            if (is_countable($file->media_meta) && count($file->media_meta) && is_iterable($file->media_meta)) {
+                foreach ($file->media_meta as $k => $v) {
+                    if ((string) $v && ($k == 'AltText')) {
                         return (string) $v;
                     }
                 }
             }
 
-            return (string) $default;
+            // Fallback to title if present
+            if ($fallback && $file->media_title !== '') {
+                if ($file->media_title == $file->basename || Files::tidyFileName($file->media_title) == $file->basename) {
+                    // Do not use media filename as title
+                    return '';
+                }
+
+                return $file->media_title;
+            }
+
+            return '';
+        };
+
+        // Function to get image legend
+        // Copy from src/Process/Backend/MediaItem.php
+        $getImageLegend = function (?File $file, $pattern, bool $dto_first = false, bool $no_date_alone = false): string {
+            if (!$file instanceof File) {
+                return '';
+            }
+
+            $res     = [];
+            $pattern = preg_split('/\s*;;\s*/', (string) $pattern);
+            $sep     = ', ';
+            $dates   = 0;
+            $items   = 0;
+
+            if ($pattern) {
+                foreach ($pattern as $v) {
+                    if ($v === 'Title' || $v === 'Description') { // Keep Title for compatibility purpose (since 2.29)
+                        if (is_countable($file->media_meta) && count($file->media_meta) && is_iterable($file->media_meta)) {
+                            foreach ($file->media_meta as $k => $v) {
+                                if ((string) $v && ($k == 'Description')) {
+                                    $res[] = $v;
+                                    $items++;
+
+                                    break;
+                                }
+                            }
+                        }
+                    } elseif ($file->media_meta->{$v}) {
+                        $res[] = (string) $file->media_meta->{$v};
+                        $items++;
+                    } elseif (preg_match('/^Date\((.+?)\)$/u', $v, $m)) {
+                        if ($dto_first && ($file->media_meta->DateTimeOriginal != 0)) {
+                            $res[] = Date::dt2str($m[1], (string) $file->media_meta->DateTimeOriginal);
+                        } else {
+                            $res[] = Date::str($m[1], $file->media_dt);
+                        }
+                        $items++;
+                        $dates++;
+                    } elseif (preg_match('/^DateTimeOriginal\((.+?)\)$/u', $v, $m) && $file->media_meta->DateTimeOriginal) {
+                        $res[] = Date::dt2str($m[1], (string) $file->media_meta->DateTimeOriginal);
+                        $items++;
+                        $dates++;
+                    } elseif (preg_match('/^separator\((.*?)\)$/u', $v, $m)) {
+                        $sep = $m[1];
+                    }
+                }
+            }
+            if ($no_date_alone && $dates === count($res) && $dates < $items) {
+                // On ne laisse pas les dates seules, sauf si ce sont les seuls items du pattern (hors séparateur)
+                return '';
+            }
+
+            return implode($sep, $res);
         };
 
         $list = [];
         foreach ($media->getFiles() as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
-                $src   = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;
-                $title = $file->media_title ?? '';
-                if ($title == $file->basename || Files::tidyFileName($title) == $file->basename) {
-                    $title = '';
-                }
+                $src = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;
 
-                $description = $get_img_desc($file, $title);
+                $alt    = $getImageAlt($file);
+                $legend = $getImageLegend($file, 'Description');
+
                 // Add media
                 $list[] = [
                     'src'         => $src,
                     'url'         => $file->file_url,
-                    'title'       => ($defaults['legend'] !== 'none' ? $title : ''),
-                    'description' => ($defaults['legend'] === 'legend' ? $description : ''),
+                    'title'       => ($defaults['legend'] !== 'none' ? $alt : ''),
+                    'description' => ($defaults['legend'] === 'legend' ? $legend : ''),
                 ];
             }
         }
