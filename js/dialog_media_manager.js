@@ -1,19 +1,16 @@
-/*global $ */
+/*global dotclear */
 'use strict';
 
 dotclear.ready(() => {
   const config = dotclear.getData('mm_media_manager');
 
-  $('#select_medias').on('click', () => {
+  document.getElementById('select_medias')?.addEventListener('click', (event) => {
+    event.preventDefault();
     sendCloseMultiple();
     window.close();
   });
 
   function sendCloseMultiple() {
-    const insert_form = $('#form-medias').get(0);
-    if (!insert_form) {
-      return;
-    }
     // Insert all selected media with default options
     const list = document.querySelectorAll('.files-group input[type=checkbox]:checked');
     if (!list?.length) {

@@ -49,7 +49,7 @@ dotclear.ready(() => {
    */
   const encodeHtmlEntities = (str) => {
     if (str === null || str === '') return '';
-    else str = str.toString();
+    const ret = str.toString();
     const map = {
       '&': '&amp;',
       '<': '&lt;',
@@ -57,7 +57,7 @@ dotclear.ready(() => {
       '"': '&quot;',
       "'": '&#039;',
     };
-    return str.replace(/[&<>"']/g, (m) => map[m]);
+    return ret.replace(/[&<>"']/g, (m) => map[m]);
   };
 
   /**
@@ -91,7 +91,7 @@ dotclear.ready(() => {
         const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`///html\n<${elt}>\n///\n`, `///html\n</${infos.settings.block}>\n///\n`);
       }
-      Object.values(infos.list).forEach((media) => {
+      for (const media of Object.values(infos.list)) {
         tb.encloseSelection('', '', (str) => {
           const alignments = {
             left: 'L',
@@ -125,7 +125,7 @@ dotclear.ready(() => {
 
           return `${res}\n`;
         });
-      });
+      }
     };
     dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
   };
@@ -142,7 +142,7 @@ dotclear.ready(() => {
         const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
       }
-      Object.values(infos.list).forEach((media) => {
+      for (const media of Object.values(infos.list)) {
         tb.encloseSelection('', '', (str) => {
           const alignments = {
             left: dotclear.mm_select.style.left,
@@ -181,7 +181,7 @@ dotclear.ready(() => {
 
           return params.legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
         });
-      });
+      }
     };
     dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
   };
@@ -201,62 +201,60 @@ dotclear.ready(() => {
           container.setAttribute('class', infos.settings?.class);
         }
       }
-      Object.values(infos.list)
-        .reverse()
-        .forEach((media) => {
-          if (media.src == undefined) {
-            return;
-          }
+      for (const media of Object.values(infos.list).reverse()) {
+        if (media.src === undefined) {
+          return;
+        }
 
-          const alignments = {
-            left: dotclear.mm_select.style.left,
-            right: dotclear.mm_select.style.right,
-            center: dotclear.mm_select.style.center,
-          };
-          const params = validateMedia({
-            selection: str,
-            alt: media?.title,
-            description: media?.description,
-            link: infos.settings?.link,
-          });
-
-          const fig = params.legend ? tb.iwin.document.createElement('figure') : null;
-          const img = tb.iwin.document.createElement('img');
-          const block = params.legend ? fig : img;
-
-          // Cope with required alignment
-          if (infos.settings.alignment in alignments) {
-            block.classList.add(alignments[infos.settings.alignment]);
-          }
-
-          img.src = tb.stripBaseURL(media.src);
-          img.setAttribute('alt', params.alt);
-          if (params.legend) {
-            const figcaption = tb.iwin.document.createElement('figcaption');
-            figcaption.appendChild(tb.iwin.document.createTextNode(params.legend));
-            fig.appendChild(img);
-            fig.appendChild(figcaption);
-          }
-
-          if (params.link) {
-            const ltitle = dotclear.mm_select.img_link_title ? encodeHtmlEntities(dotclear.mm_select.img_link_title) : '';
-            const a = tb.iwin.document.createElement('a');
-            a.href = tb.stripBaseURL(media.url);
-            a.setAttribute('title', ltitle);
-            a.appendChild(block);
-            if (container === undefined) {
-              tb.insertNode(a);
-            } else {
-              container.insertNode(a);
-            }
-            return;
-          }
-          if (container === undefined) {
-            tb.insertNode(block);
-          } else {
-            container.insertNode(block);
-          }
+        const alignments = {
+          left: dotclear.mm_select.style.left,
+          right: dotclear.mm_select.style.right,
+          center: dotclear.mm_select.style.center,
+        };
+        const params = validateMedia({
+          selection: str,
+          alt: media?.title,
+          description: media?.description,
+          link: infos.settings?.link,
         });
+
+        const fig = params.legend ? tb.iwin.document.createElement('figure') : null;
+        const img = tb.iwin.document.createElement('img');
+        const block = params.legend ? fig : img;
+
+        // Cope with required alignment
+        if (infos.settings.alignment in alignments) {
+          block.classList.add(alignments[infos.settings.alignment]);
+        }
+
+        img.src = tb.stripBaseURL(media.src);
+        img.setAttribute('alt', params.alt);
+        if (params.legend) {
+          const figcaption = tb.iwin.document.createElement('figcaption');
+          figcaption.appendChild(tb.iwin.document.createTextNode(params.legend));
+          fig.appendChild(img);
+          fig.appendChild(figcaption);
+        }
+
+        if (params.link) {
+          const ltitle = dotclear.mm_select.img_link_title ? encodeHtmlEntities(dotclear.mm_select.img_link_title) : '';
+          const a = tb.iwin.document.createElement('a');
+          a.href = tb.stripBaseURL(media.url);
+          a.setAttribute('title', ltitle);
+          a.appendChild(block);
+          if (container === undefined) {
+            tb.insertNode(a);
+          } else {
+            container.insertNode(a);
+          }
+          return;
+        }
+        if (container === undefined) {
+          tb.insertNode(block);
+        } else {
+          container.insertNode(block);
+        }
+      }
       if (container !== undefined) {
         tb.insertNode(container);
       }
@@ -277,7 +275,7 @@ dotclear.ready(() => {
         const elt = infos.settings.block + (infos.settings?.class ? ` class="${infos.settings?.class}"` : '');
         tb.encloseSelection(`<${elt}>\n`, `</${infos.settings.block}>\n`);
       }
-      Object.values(infos.list).forEach((media) => {
+      for (const media of Object.values(infos.list)) {
         tb.encloseSelection('', '', (str) => {
           const alignments = {
             left: dotclear.mm_select.style.left,
@@ -317,7 +315,7 @@ dotclear.ready(() => {
 
           return params.legend ? `${figure}\n${img}\n${caption}</figure>\n` : `${img}\n`;
         });
-      });
+      }
     };
     dotclear.mm_select.getInfos(data.path, data.list, data.pref, this, doInsert);
   };
@@ -327,8 +325,6 @@ dotclear.ready(() => {
 
   // Multiple media insertion helpers
   dotclear.mm_select.getInfos = (path, list, pref, tb, fn) => {
-    list = JSON.stringify(list);
-    pref = JSON.stringify(pref);
     // Call REST Service
     dotclear.jsonServicesPost(
       'getMediaInfos',
@@ -339,8 +335,8 @@ dotclear.ready(() => {
       },
       {
         path,
-        list,
-        pref,
+        list: JSON.stringify(list),
+        pref: JSON.stringify(pref),
       },
     );
 

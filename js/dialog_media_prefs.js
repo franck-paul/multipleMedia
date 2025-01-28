@@ -1,11 +1,13 @@
-/*global $ */
+/*global dotclear */
 'use strict';
 
 dotclear.ready(() => {
-  $('#media-insert-cancel').on('click', () => {
+  document.getElementById('media-insert-cancel')?.addEventListener('click', (event) => {
+    event.preventDefault();
     window.close();
   });
-  $('#media-insert-ok').on('click', () => {
+  document.getElementById('media-insert-ok')?.addEventListener('click', (event) => {
+    event.preventDefault();
     sendCloseMultiple();
     window.close();
   });
@@ -13,14 +15,14 @@ dotclear.ready(() => {
   function sendCloseMultiple() {
     // Return back settings
     const tb = window.the_toolbar;
-    const { data } = tb.elements.mm_select;
+    const { data } = tb?.elements.mm_select;
 
     data.pref = {
-      size: $('input[name="src"][type=radio]:checked').attr('value'),
-      alignment: $('input[name="alignment"][type=radio]:checked').attr('value'),
-      link: $('input[name="insertion"][type=radio]:checked').attr('value') === 'link' ? '1' : '0',
-      legend: $('input[name="legend"][type=radio]:checked').attr('value'),
-      mediadef: $('input[name="mediadef"]').attr('value'),
+      size: document.querySelector('input[name="src"][type=radio]:checked').getAttribute('value'),
+      alignment: document.querySelector('input[name="alignment"][type=radio]:checked').getAttribute('value'),
+      link: document.querySelector('input[name="insertion"][type=radio]:checked').getAttribute('value') === 'link' ? '1' : '0',
+      legend: document.querySelector('input[name="legend"][type=radio]:checked').getAttribute('value'),
+      mediadef: document.querySelector('input[name="mediadef"]').getAttribute('value'),
     };
 
     // Let the magic happen
