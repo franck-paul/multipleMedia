@@ -10,6 +10,7 @@ dotclear.ready(() => {
     title: 'Multiple image chooser',
     context: 'post',
     icon: dotclear.mm_select.icon,
+    icon_dark: dotclear.mm_select.icon_dark,
     fn: {},
     fncall: {},
     open_url: dotclear.mm_select.open_url,

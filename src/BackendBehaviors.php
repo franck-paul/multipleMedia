@@ -51,9 +51,10 @@ class BackendBehaviors
         }
 
         $data = [
-            'title'    => __('Insert multiple media'),
-            'icon'     => urldecode(Page::getPF(My::id() . '/icon.svg')),
-            'open_url' => App::backend()->url()->get('admin.media', [
+            'title'     => __('Insert multiple media'),
+            'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
+            'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
+            'open_url'  => App::backend()->url()->get('admin.media', [
                 'popup'     => 1,
                 'plugin_id' => 'dcLegacyEditor',
                 'select'    => 2,   // sélection multiple
