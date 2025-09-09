@@ -39,8 +39,9 @@ class Manage
      */
     public static function init(): bool
     {
-        // Only in popup mode
-        return self::status(My::checkContext(My::MANAGE) && !empty($_REQUEST['popup']));
+        return empty($_REQUEST['popup']) ?
+            self::status(My::checkContext(My::MANAGE)) :
+            self::status(My::checkContext(My::BACKEND));
     }
 
     /**
