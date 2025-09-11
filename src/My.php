@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief multipleMedia, a plugin for Dotclear 2
  *

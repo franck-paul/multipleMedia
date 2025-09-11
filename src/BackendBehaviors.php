@@ -34,14 +34,21 @@ class BackendBehaviors
             return '';
         }
 
-        return
-        Page::jsJson('mm_media_manager', [
-            'url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
-                'popup' => 1,
-                'd'     => '',
-            ], '&'),
-        ]) .
-        My::jsLoad('dialog_media_manager.js');
+        if (App::blog()->isDefined() && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_MEDIA_ADMIN,
+            App::auth()::PERMISSION_ADMIN,  // Admin+
+        ]), App::blog()->id())) {
+            return
+            Page::jsJson('mm_media_manager', [
+                'url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
+                    'popup' => 1,
+                    'd'     => '',
+                ], '&'),
+            ]) .
+            My::jsLoad('dialog_media_manager.js');
+        }
+
+        return '';
     }
 
     public static function adminPostEditor(string $editor = ''): string
@@ -50,27 +57,34 @@ class BackendBehaviors
             return '';
         }
 
-        $data = [
-            'title'     => __('Insert multiple media'),
-            'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
-            'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
-            'open_url'  => App::backend()->url()->get('admin.media', [
-                'popup'     => 1,
-                'plugin_id' => 'dcLegacyEditor',
-                'select'    => 2,   // sélection multiple
-            ], '&'),
-            'style' => [  // List of classes used
-                'class'  => true,
-                'left'   => 'media-left',
-                'center' => 'media-center',
-                'right'  => 'media-right',
-            ],
-            'img_link_title' => __('Open this media'),
-        ];
+        if (App::blog()->isDefined() && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_MEDIA_ADMIN,
+            App::auth()::PERMISSION_ADMIN,  // Admin+
+        ]), App::blog()->id())) {
+            $data = [
+                'title'     => __('Insert multiple media'),
+                'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
+                'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
+                'open_url'  => App::backend()->url()->get('admin.media', [
+                    'popup'     => 1,
+                    'plugin_id' => 'dcLegacyEditor',
+                    'select'    => 2,   // sélection multiple
+                ], '&'),
+                'style' => [  // List of classes used
+                    'class'  => true,
+                    'left'   => 'media-left',
+                    'center' => 'media-center',
+                    'right'  => 'media-right',
+                ],
+                'img_link_title' => __('Open this media'),
+            ];
 
-        return
-            Page::jsJson('mm_select', $data) .
-            My::jsLoad('legacy-post.js');
+            return
+                Page::jsJson('mm_select', $data) .
+                My::jsLoad('legacy-post.js');
+        }
+
+        return '';
     }
 
     public static function adminBlogPreferencesForm(): string
