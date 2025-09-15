@@ -5,6 +5,15 @@ dotclear.ready(() => {
   dotclear.mm_select = dotclear.getData('mm_select');
 
   // Toolbar button for multiple media insertion
+  jsToolBar.prototype.elements.mmSpaceBefore = {
+    type: 'space',
+    format: {
+      wysiwyg: true,
+      wiki: true,
+      xhtml: true,
+      markdown: true,
+    },
+  };
   jsToolBar.prototype.elements.mm_select = {
     type: 'button',
     title: 'Multiple image chooser',
@@ -24,6 +33,15 @@ dotclear.ready(() => {
         'dc_popup',
         'alwaysRaised=yes,dependent=yes,toolbar=yes,height=500,width=760,menubar=no,resizable=yes,scrollbars=yes,status=no',
       );
+    },
+  };
+  jsToolBar.prototype.elements.mmSpaceAfter = {
+    type: 'space',
+    format: {
+      wysiwyg: true,
+      wiki: true,
+      xhtml: true,
+      markdown: true,
     },
   };
 
