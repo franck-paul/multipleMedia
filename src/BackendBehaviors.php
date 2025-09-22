@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\multipleMedia;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
@@ -39,7 +38,7 @@ class BackendBehaviors
             App::auth()::PERMISSION_ADMIN,  // Admin+
         ]), App::blog()->id())) {
             return
-            Page::jsJson('mm_media_manager', [
+            App::backend()->page()->jsJson('mm_media_manager', [
                 'url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
                     'popup' => 1,
                     'd'     => '',
@@ -63,8 +62,8 @@ class BackendBehaviors
         ]), App::blog()->id())) {
             $data = [
                 'title'     => __('Insert multiple media'),
-                'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
-                'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
+                'icon'      => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon.svg')),
+                'icon_dark' => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
                 'open_url'  => App::backend()->url()->get('admin.media', [
                     'popup'     => 1,
                     'plugin_id' => 'dcLegacyEditor',
@@ -80,7 +79,7 @@ class BackendBehaviors
             ];
 
             return
-                Page::jsJson('mm_select', $data) .
+                App::backend()->page()->jsJson('mm_select', $data) .
                 My::jsLoad('legacy-post.js');
         }
 
