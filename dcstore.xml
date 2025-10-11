@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="multipleMedia">
     <name>multipleMedia</name>
-    <version>7.4</version>
+    <version>7.5</version>
     <author>Franck Paul</author>
     <desc>Insert multiple media</desc>
-    <date>2025-09-22T10:29:31+0200</date>
-    <file>https://github.com/franck-paul/multipleMedia/releases/download/7.4/plugin-multipleMedia-7.4.zip</file>
+    <date>2025-10-11T10:43:17+0200</date>
+    <file>https://github.com/franck-paul/multipleMedia/releases/download/7.5/plugin-multipleMedia-7.5.zip</file>
     <da:dcmin>2.36</da:dcmin>
     <da:details>https://open-time.net/?q=multipleMedia</da:details>
     <da:support>https://github.com/franck-paul/multipleMedia</da:support>
