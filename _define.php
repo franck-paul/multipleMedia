@@ -15,9 +15,9 @@ $this->registerModule(
     'multipleMedia',
     'Insert multiple media',
     'Franck Paul',
-    '7.4',
+    '7.5',
     [
-        'date'        => '2025-09-22T10:29:31+0200',
+        'date'        => '2025-10-11T10:43:17+0200',
         'requires'    => [['core', '2.36']],
         'permissions' => 'My',
         'priority'    => 1010,  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
