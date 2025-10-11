@@ -26,7 +26,7 @@ class BackendRest
      *
      * @return     array<string, mixed>
      */
-    public static function getMediaInfos($get, $post): array
+    public static function getMediaInfos(array $get, array $post): array
     {
         $src_path = empty($post['path']) ? '' : $post['path'];
         $src_list = empty($post['list']) ? [] : json_decode($post['list']);
