@@ -110,8 +110,8 @@ class Manage
         }
 
         $img_sizes = [];
-        foreach ($media->getThumbSizes() as $code => $size) {
-            $img_sizes[__($size[2])] = $code;
+        foreach ($media->getThumbSizes() as $code => $thumbSize) {
+            $img_sizes[__($thumbSize[2])] = $code;
         }
 
         $sizes = [];
