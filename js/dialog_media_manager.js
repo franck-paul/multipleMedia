@@ -7,7 +7,10 @@ dotclear.ready(() => {
   document.getElementById('select_medias')?.addEventListener('click', (event) => {
     event.preventDefault();
     sendCloseMultiple();
-    window.close();
+    // Wait some time before closing current popup (Vivaldi seems to have some difficulties with the transition without that)
+    setTimeout(function () {
+      window.close();
+    }, 500);
   });
 
   function sendCloseMultiple() {
