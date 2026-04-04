@@ -32,6 +32,13 @@ class BackendRest
         $src_list = empty($post['list']) ? [] : json_decode($post['list']);
         $src_pref = empty($post['pref']) ? [] : json_decode($post['pref'], true);
 
+        if (!is_array($src_list)) {
+            $src_list = [];
+        }
+        if (!is_array($src_pref)) {
+            $src_pref = [];
+        }
+
         $data = [];
 
         try {
@@ -67,9 +74,11 @@ class BackendRest
                 $specifics = file_get_contents($local);
                 if ($specifics !== false) {
                     $specifics = json_decode($specifics, true, 512, JSON_THROW_ON_ERROR);
-                    foreach (array_keys($defaults) as $key) {
-                        $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
-                        $defaults['mediadef'] = true;
+                    if (is_array($specifics)) {
+                        foreach (array_keys($defaults) as $key) {
+                            $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
+                            $defaults['mediadef'] = true;
+                        }
                     }
                 }
             }
@@ -90,23 +99,27 @@ class BackendRest
         $list          = [];
         $use_dto_first = (bool) App::blog()->settings()->system->media_img_use_dto_first;
         $no_date_alone = (bool) App::blog()->settings()->system->media_img_no_date_alone;
+        $pattern       = is_string($pattern = App::blog()->settings()->system->media_img_title_pattern) ? $pattern : null;
         foreach ($media->getFiles() as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos
-                $src = isset($file->media_thumb) ? ($file->media_thumb[$defaults['size']] ?? $file->file_url) : $file->file_url;
+                $size_key = is_string($size_key = $defaults['size']) ? $size_key : '';
+                if ($size_key !== '') {
+                    $src = isset($file->media_thumb) ? ($file->media_thumb[$size_key] ?? $file->file_url) : $file->file_url;
 
-                // Add media
-                $list[] = [
-                    'src'         => $src,
-                    'url'         => $file->file_url,
-                    'title'       => ($defaults['legend'] !== 'none' ? App::media()->getMediaAlt($file) : ''),
-                    'description' => ($defaults['legend'] === 'legend' ? App::media()->getMediaLegend(
-                        $file,
-                        App::blog()->settings()->system->media_img_title_pattern,
-                        $use_dto_first,
-                        $no_date_alone
-                    ) : ''),
-                ];
+                    // Add media
+                    $list[] = [
+                        'src'         => $src,
+                        'url'         => $file->file_url,
+                        'title'       => ($defaults['legend'] !== 'none' ? App::media()->getMediaAlt($file) : ''),
+                        'description' => ($defaults['legend'] === 'legend' ? App::media()->getMediaLegend(
+                            $file,
+                            $pattern,
+                            $use_dto_first,
+                            $no_date_alone
+                        ) : ''),
+                    ];
+                }
             }
         }
 

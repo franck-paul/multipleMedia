@@ -99,21 +99,24 @@ class BackendBehaviors
             __('section') => 'section',
         ];
 
+        $block = is_string($block = $settings->block) ? $block : '';
+        $class = is_string($class = $settings->class) ? $class : '';
+
         echo
         (new Fieldset('multiplemedia'))
         ->legend((new Legend(My::id())))
         ->fields([
             (new Para())->items([
                 (new Select('multiplemedia_block'))
-                ->items($block_combo)
-                ->default($settings->block)
-                ->label((new Label(__('Container HTML element:'), Label::INSIDE_TEXT_BEFORE))),
+                    ->items($block_combo)
+                    ->default($block)
+                    ->label((new Label(__('Container HTML element:'), Label::INSIDE_TEXT_BEFORE))),
             ]),
             (new Para())->items([
                 (new Input('multiplemedia_class'))
                     ->size(50)
                     ->maxlength(128)
-                    ->value(Html::escapeHTML($settings->class))
+                    ->value(Html::escapeHTML($class))
                     ->label((new Label(__('HTML element class(es):'), Label::OUTSIDE_TEXT_BEFORE))),
             ]),
             (new Para())->class('form-note')->items([

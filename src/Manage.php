@@ -61,7 +61,7 @@ class Manage
 
         $head = My::jsLoad('dialog_media_prefs.js');
 
-        $src_path = empty($_REQUEST['d']) ? '' : $_REQUEST['d'];
+        $src_path = isset($_REQUEST['d']) && is_string($src_path = $_REQUEST['d']) ? $src_path : '';
 
         try {
             $media = App::media();
@@ -100,9 +100,11 @@ class Manage
                 $specifics = file_get_contents($local);
                 if ($specifics !== false) {
                     $specifics = json_decode($specifics, true, 512, JSON_THROW_ON_ERROR);
-                    foreach (array_keys($defaults) as $key) {
-                        $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
-                        $defaults['mediadef'] = true;
+                    if (is_array($specifics)) {
+                        foreach (array_keys($defaults) as $key) {
+                            $defaults[$key]       = $specifics[$key] ?? $defaults[$key];
+                            $defaults['mediadef'] = true;
+                        }
                     }
                 }
             }
