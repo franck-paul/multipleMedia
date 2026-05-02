@@ -35,6 +35,7 @@ class BackendRest
         if (!is_array($src_list)) {
             $src_list = [];
         }
+
         if (!is_array($src_pref)) {
             $src_pref = [];
         }
