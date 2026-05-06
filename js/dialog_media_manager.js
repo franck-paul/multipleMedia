@@ -8,7 +8,7 @@ dotclear.ready(() => {
     event.preventDefault();
     sendCloseMultiple();
     // Wait some time before closing current popup (Vivaldi seems to have some difficulties with the transition without that)
-    setTimeout(function () {
+    setTimeout(() => {
       window.close();
     }, 500);
   });
