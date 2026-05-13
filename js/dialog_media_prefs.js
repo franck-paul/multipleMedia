@@ -14,7 +14,7 @@ dotclear.ready(() => {
 
   function sendCloseMultiple() {
     // Return back settings
-    const tb = window.the_toolbar;
+    const tb = globalThis.the_toolbar;
     const { data } = tb?.elements.mm_select;
 
     data.pref = {

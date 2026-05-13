@@ -1,11 +1,11 @@
-/*global dotclear, jsToolBar */
+/*global dotclear */
 'use strict';
 
 dotclear.ready(() => {
   dotclear.mm_select = dotclear.getData('mm_select');
 
   // Toolbar button for multiple media insertion
-  jsToolBar.prototype.elements.mm_select = {
+  dotclear.ToolBar.prototype.elements.mm_select = {
     group: 'media',
     type: 'button',
     title: 'Multiple image chooser',
@@ -17,7 +17,7 @@ dotclear.ready(() => {
     open_url: dotclear.mm_select.open_url,
     data: {},
     popup() {
-      window.the_toolbar = this;
+      globalThis.the_toolbar = this;
       this.elements.mm_select.data = {};
 
       window.open(
@@ -28,16 +28,16 @@ dotclear.ready(() => {
     },
   };
 
-  jsToolBar.prototype.elements.mm_select.fn.wiki = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fn.wiki = function () {
     this.elements.mm_select.popup.call(this);
   };
-  jsToolBar.prototype.elements.mm_select.fn.xhtml = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fn.xhtml = function () {
     this.elements.mm_select.popup.call(this);
   };
-  jsToolBar.prototype.elements.mm_select.fn.wysiwyg = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fn.wysiwyg = function () {
     this.elements.mm_select.popup.call(this);
   };
-  jsToolBar.prototype.elements.mm_select.fn.markdown = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fn.markdown = function () {
     this.elements.mm_select.popup.call(this);
   };
 
@@ -82,7 +82,7 @@ dotclear.ready(() => {
   };
 
   // Wiki
-  jsToolBar.prototype.elements.mm_select.fncall.wiki = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fncall.wiki = function () {
     const { data } = this.elements.mm_select;
     if (data === undefined || data.list.length === 0) {
       return;
@@ -133,7 +133,7 @@ dotclear.ready(() => {
   };
 
   // HTML (source)
-  jsToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fncall.xhtml = function () {
     const { data } = this.elements.mm_select;
     if (data === undefined || data.list.length === 0) {
       return;
@@ -189,7 +189,7 @@ dotclear.ready(() => {
   };
 
   // HTML (wysiwyg)
-  jsToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fncall.wysiwyg = function () {
     const { data } = this.elements.mm_select;
     if (data === undefined || data.list.length === 0) {
       return;
@@ -266,7 +266,7 @@ dotclear.ready(() => {
   };
 
   // Markdown
-  jsToolBar.prototype.elements.mm_select.fncall.markdown = function () {
+  dotclear.ToolBar.prototype.elements.mm_select.fncall.markdown = function () {
     const { data } = this.elements.mm_select;
     if (data === undefined || data.list.length === 0) {
       return;
@@ -323,7 +323,7 @@ dotclear.ready(() => {
   };
 
   // Get multiple media insertion config
-  jsToolBar.prototype.elements.mm_select.title = dotclear.mm_select.title;
+  dotclear.ToolBar.prototype.elements.mm_select.title = dotclear.mm_select.title;
 
   // Multiple media insertion helpers
   dotclear.mm_select.getInfos = (path, list, pref, tb, fn) => {
