@@ -56,12 +56,12 @@ class BackendRest
 
         $settings = My::settings();
         $defaults = [
-            'block'     => $settings->block ?: '',
-            'class'     => $settings->class ?: '',
-            'size'      => App::blog()->settings()->system->media_img_default_size ?: 'm',
-            'alignment' => App::blog()->settings()->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) App::blog()->settings()->system->media_img_default_link,
-            'legend'    => App::blog()->settings()->system->media_img_default_legend ?: 'legend',
+            'block'     => $settings->getStr('block', false) ?: '',
+            'class'     => $settings->getStr('class', false) ?: '',
+            'size'      => App::blog()->settings()->get('system')->getStr('media_img_default_size', false) ?: 'm',
+            'alignment' => App::blog()->settings()->get('system')->getStr('media_img_default_alignment', false) ?: 'none',
+            'link'      => App::blog()->settings()->get('system')->getBool('media_img_default_link', false),
+            'legend'    => App::blog()->settings()->get('system')->getStr('media_img_default_legend', false) ?: 'legend',
             'mediadef'  => false,
         ];
 
@@ -98,9 +98,9 @@ class BackendRest
 
         // Get full information for each media in list
         $list          = [];
-        $use_dto_first = (bool) App::blog()->settings()->system->media_img_use_dto_first;
-        $no_date_alone = (bool) App::blog()->settings()->system->media_img_no_date_alone;
-        $pattern       = is_string($pattern = App::blog()->settings()->system->media_img_title_pattern) ? $pattern : null;
+        $use_dto_first = App::blog()->settings()->get('system')->getBool('media_img_use_dto_first', false);
+        $no_date_alone = App::blog()->settings()->get('system')->getBool('media_img_no_date_alone', false);
+        $pattern       = App::blog()->settings()->get('system')->getStr('media_img_title_pattern');
         foreach ($media->getFiles() as $file) {
             if (in_array($file->basename, $src_list) && $file->media_image) {
                 // Prepare media infos

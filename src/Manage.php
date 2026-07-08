@@ -83,10 +83,10 @@ class Manage
 
         // Form
         $defaults = [
-            'size'      => App::blog()->settings()->system->media_img_default_size ?: 'm',
-            'alignment' => App::blog()->settings()->system->media_img_default_alignment ?: 'none',
-            'link'      => (bool) App::blog()->settings()->system->media_img_default_link,
-            'legend'    => App::blog()->settings()->system->media_img_default_legend ?: 'legend',
+            'size'      => App::blog()->settings()->get('system')->getStr('media_img_default_size', false) ?: 'm',
+            'alignment' => App::blog()->settings()->get('system')->getStr('media_img_default_alignment', false) ?: 'none',
+            'link'      => App::blog()->settings()->get('system')->getBool('media_img_default_link', false),
+            'legend'    => App::blog()->settings()->get('system')->getStr('media_img_default_legend', false) ?: 'legend',
             'mediadef'  => false,
         ];
 

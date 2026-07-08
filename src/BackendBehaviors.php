@@ -99,8 +99,8 @@ class BackendBehaviors
             __('section') => 'section',
         ];
 
-        $block = is_string($block = $settings->block) ? $block : '';
-        $class = is_string($class = $settings->class) ? $class : '';
+        $block = $settings->getStr('block', false);
+        $class = $settings->getStr('class', false);
 
         echo
         (new Fieldset('multiplemedia'))
