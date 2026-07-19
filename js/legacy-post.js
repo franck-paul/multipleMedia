@@ -57,9 +57,8 @@ dotclear.ready(() => {
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#039;',
     };
-    return ret.replaceAll(/[&<>"']/g, (m) => map[m]);
+    return ret.replaceAll(/[&<>"]/g, (m) => map[m]);
   };
 
   /**
