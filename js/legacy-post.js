@@ -213,7 +213,7 @@ dotclear.ready(() => {
           center: dotclear.mm_select.style.center,
         };
         const params = validateMedia({
-          selection: str,
+          selection: '',
           alt: media?.title,
           description: media?.description,
           link: infos.settings?.link,
@@ -246,14 +246,14 @@ dotclear.ready(() => {
           if (container === undefined) {
             tb.insertNode(a);
           } else {
-            container.insertNode(a);
+            container.appendChild(a);
           }
           return;
         }
         if (container === undefined) {
           tb.insertNode(block);
         } else {
-          container.insertNode(block);
+          container.appendChild(block);
         }
       }
       if (container !== undefined) {
