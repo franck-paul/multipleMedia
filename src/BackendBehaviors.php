@@ -20,9 +20,9 @@ use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Legend;
+use Dotclear\Helper\Html\Form\Note;
 use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Form\Select;
-use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Html;
 
 class BackendBehaviors
@@ -119,9 +119,9 @@ class BackendBehaviors
                     ->value(Html::escapeHTML($class))
                     ->label((new Label(__('HTML element class(es):'), Label::OUTSIDE_TEXT_BEFORE))),
             ]),
-            (new Para())->class('form-note')->items([
-                (new Text(null, __('Comma separated list of classes, leave it empty to not use it.'))),
-            ]),
+            (new Note())
+                ->class('form-note')
+                ->text(__('Comma separated list of classes, leave it empty to not use it.')),
         ])
         ->render();
 
