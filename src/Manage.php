@@ -124,7 +124,8 @@ class Manage
                     ->label((new Label($k, Label::INSIDE_TEXT_AFTER)));
         }
 
-        $sizes[] = (new Radio(['src', 'src' . ++$i]))
+        $i++;
+        $sizes[] = (new Radio(['src', 'src' . $i]))
                 ->value(Html::escapeHTML('o'))
                 ->label((new Label(__('original'), Label::INSIDE_TEXT_AFTER)));
 
