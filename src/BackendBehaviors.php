@@ -62,8 +62,8 @@ class BackendBehaviors
         ]), App::blog()->id())) {
             $data = [
                 'title'     => __('Insert multiple media'),
-                'icon'      => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon.svg')),
-                'icon_dark' => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
+                'icon'      => urldecode(App::backend()->page()->getPF(My::id() . '/icon.svg')),
+                'icon_dark' => urldecode(App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
                 'open_url'  => App::backend()->url()->get('admin.media', [
                     'popup'     => 1,
                     'plugin_id' => 'dcLegacyEditor',

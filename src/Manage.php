@@ -47,7 +47,7 @@ class Manage
      */
     public static function process(): bool
     {
-        return (bool) self::status();
+        return self::status();
     }
 
     /**
