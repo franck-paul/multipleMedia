@@ -102,7 +102,7 @@ class BackendRest
         $no_date_alone = App::blog()->settings()->get('system')->getBool('media_img_no_date_alone', false);
         $pattern       = App::blog()->settings()->get('system')->getStr('media_img_title_pattern');
         foreach ($media->getFiles() as $file) {
-            if (in_array($file->basename, $src_list) && $file->media_image) {
+            if (in_array($file->basename, $src_list, true) && $file->media_image) {
                 // Prepare media infos
                 $size_key = is_string($size_key = $defaults['size']) ? $size_key : '';
                 if ($size_key !== '') {
