@@ -119,7 +119,7 @@ class Manage
         $sizes = [];
         $i     = 0;
         foreach (array_reverse($img_sizes, true) as $k => $v) {
-            $sizes[] = (new Radio(['src', 'src' . ++$i], $v == $defaults['size']))
+            $sizes[] = (new Radio(['src', 'src' . ++$i], $v === $defaults['size']))
                     ->value(Html::escapeHTML($v))
                     ->label((new Label($k, Label::INSIDE_TEXT_AFTER)));
         }
@@ -130,10 +130,10 @@ class Manage
                 ->label((new Label(__('original'), Label::INSIDE_TEXT_AFTER)));
 
         $i_align = [
-            'none'   => [__('None'), ($defaults['alignment'] == 'none' ? 1 : 0)],
-            'left'   => [__('Left'), ($defaults['alignment'] == 'left' ? 1 : 0)],
-            'right'  => [__('Right'), ($defaults['alignment'] == 'right' ? 1 : 0)],
-            'center' => [__('Center'), ($defaults['alignment'] == 'center' ? 1 : 0)],
+            'none'   => [__('None'), ($defaults['alignment'] === 'none' ? 1 : 0)],
+            'left'   => [__('Left'), ($defaults['alignment'] === 'left' ? 1 : 0)],
+            'right'  => [__('Right'), ($defaults['alignment'] === 'right' ? 1 : 0)],
+            'center' => [__('Center'), ($defaults['alignment'] === 'center' ? 1 : 0)],
         ];
         $aligns = [];
         $i      = 0;
@@ -155,13 +155,13 @@ class Manage
 
                         (new Div())->class('two-boxes')->items([
                             (new Text('h3', __('Image legend and alternate text'))),
-                            (new Radio(['legend', 'legend1'], $defaults['legend'] == 'legend'))
+                            (new Radio(['legend', 'legend1'], $defaults['legend'] === 'legend'))
                                 ->value('legend')
                                 ->label((new Label(__('Legend and alternate text'), Label::INSIDE_TEXT_AFTER))),
-                            (new Radio(['legend', 'legend2'], $defaults['legend'] == 'title'))
+                            (new Radio(['legend', 'legend2'], $defaults['legend'] === 'title'))
                                 ->value('title')
                                 ->label((new Label(__('Alternate text'), Label::INSIDE_TEXT_AFTER))),
-                            (new Radio(['legend', 'legend3'], $defaults['legend'] == 'none'))
+                            (new Radio(['legend', 'legend3'], $defaults['legend'] === 'none'))
                                 ->value('none')
                                 ->label((new Label(__('None'), Label::INSIDE_TEXT_AFTER))),
                         ]),
