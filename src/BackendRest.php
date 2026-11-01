@@ -21,12 +21,12 @@ use Exception;
 class BackendRest
 {
     /**
-     * @param      array<string, string>   $get    The cleaned $_GET
+     * @param      array<string, string>   $_get   The cleaned $_GET
      * @param      array<string, string>   $post   The cleaned $_POST
      *
      * @return     array<string, mixed>
      */
-    public static function getMediaInfos(array $get, array $post): array
+    public static function getMediaInfos(array $_get, array $post): array
     {
         $src_path = empty($post['path']) ? '' : $post['path'];
         $src_list = empty($post['list']) ? [] : json_decode($post['list']);
@@ -89,9 +89,9 @@ class BackendRest
         // Merge user setting (from popup)
         $defaults['size']      = $src_pref['size'] ?: $defaults['size'];
         $defaults['alignment'] = $src_pref['alignment'] ?: $defaults['alignment'];
-        $defaults['link']      = $src_pref['link'] ? ($src_pref['link'] === '1') : $defaults['link'];
+        $defaults['link']      = (bool) $src_pref['link'] ? ($src_pref['link'] === '1') : $defaults['link'];
         $defaults['legend']    = $src_pref['legend'] ?: $defaults['legend'];
-        $defaults['mediadef']  = $src_pref['mediadef'] ? ($src_pref['mediadef'] === '1') : $defaults['mediadef'];
+        $defaults['mediadef']  = (bool) $src_pref['mediadef'] ? ($src_pref['mediadef'] === '1') : $defaults['mediadef'];
 
         // Give back selected insertion settings
         $data['settings'] = $defaults;
