@@ -18,9 +18,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'multipleMedia',
         'Insert multiple media',
         'Franck Paul',
-        '8.0.1',
+        '8.1',
         [
-            'date'        => '2026-08-10T10:54:04+0200',
+            'date'        => '2026-11-07T16:58:55+0100',
             'requires'    => [['core', '2.39']],
             'permissions' => 'My',
             'priority'    => 1010,  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
